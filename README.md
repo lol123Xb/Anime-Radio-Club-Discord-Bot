@@ -1,4 +1,6 @@
-# Anime-Radio-Club-Discord-Bot
+![ANIMERADIO.club](https://lh3.googleusercontent.com/zBEKPHMupr8omneGhfGgs7vjFh6WaHyW-zOfkEP988mFhM5CkZ1lWaD8Fbr8kiS5QuKoaZyGc0vLSGM=w1920-h950-rw)
+
+# Official ANIMERADIO.club Discord Bot
 The official Anime Radio Club Discord bot!!! Made with Discord.js
 # Usage
 After you've added the bot to your server, join a voice channel and type `=join` to bind the bot to that channel. You have to have the "Manage server" permission to use this command.

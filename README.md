@@ -24,3 +24,6 @@ Shows a real basic usage help.
 * Download [FFMPEG](https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20170123-e371f03-win64-static.zip)
 * Take the files from the first folder which should be named "Bin" and put it in the same folder as the Bot
 * Run the bot with `node animeradioclub.js`
+
+# Troubleshooting
+* If you get an error regarding `Opus-Engine` just do `npm install opusscript` and all should be fine.

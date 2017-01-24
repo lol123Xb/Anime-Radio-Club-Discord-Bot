@@ -10,6 +10,7 @@ Type this while in a voice channel to have the bot join that channel and start p
 Type this to get the bot to leave the voice channel. Once again, limited to users with the "manage server" permission.
 * `=help`
 Shows a real basic usage help.
+
 # Run it with your own custom Bot or something
 * Clone the Git or Repo or whatnot
 * Create a Discord OAuth application and bot account

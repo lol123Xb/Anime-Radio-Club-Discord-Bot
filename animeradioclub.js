@@ -53,7 +53,7 @@ bot.on("message", function (message) {
 					inChannel = true;
 					message.channel.sendMessage("Voice channel successfully joined!")
 					message.member.voiceChannel.join().then(connection => {
-					require('http').get(config.url, (res) => {
+					require('http').get("http://streaming.radionomy.com/AnimeRadioClub?lang=en-US%2cen%3bq%3d0.8", (res) => {
 						connection.playStream(res);
 					})
 					})

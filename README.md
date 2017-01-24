@@ -19,5 +19,6 @@ Shows a real basic usage help.
 * Rename/duplicate `config-sample.json` to `config.json` and fill out the relevant information
 * Install Discord JS using Node JS and the command `npm install discord.js`
 * Make sure Discord JS is up to date
-* Don't worry about FFMPEG because you will get it with the Git/Repo/whatever
+* Download [FFMPEG](https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20170123-e371f03-win64-static.zip)
+* Take the files from the first folder which should be named "Bin" and put it in the same folder as the Bot
 * Run the bot with `node animeradioclub.js`

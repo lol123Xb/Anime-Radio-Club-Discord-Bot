@@ -10,6 +10,8 @@ This list uses `=` as the prefix for each
 Type this while in a voice channel to have the bot join that channel and start playing there. Limited to users with the "manage server" permission.
 * `=leave`
 Type this to get the bot to leave the voice channel. Once again, limited to users with the "manage server" permission.
+* `=np`
+Supposed to show currently playing song. (Work in progress)
 * `=help`
 Shows a real basic usage help.
 

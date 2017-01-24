@@ -40,7 +40,9 @@ bot.on("message", function (message) {
 					**Commands:**
 					**\\=join**: Joins the voice channel you are currently in.
 					**\\=leave**: Leaves the voice channel the bot is currently in.
-					**\\=np**: Displays the currently playing song. (WIP)`,
+					**\\=np**: Displays the currently playing song. (WIP)
+					**Github:**
+					https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot`,
 				color: 3447003
 			});
 		}

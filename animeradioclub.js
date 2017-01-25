@@ -8,8 +8,20 @@ var inChannel = false;
 
 bot.on("ready", function () {
     console.log("Anime Radio Club Bot is up and running on " + bot.guilds.size + " servers");
-	bot.user.setGame(`on ${bot.guilds.size} servers`);
+	bot.user.setGame(serverlist());
 });
+
+function serverlist() {
+	bot.user.setGame(`on ${bot.guilds.size} servers`);
+
+	return setTimeout(serverlist2, 10000);
+}
+
+function serverlist2() {
+	bot.user.setGame(`on ${bot.guilds.size} servers`);
+
+	return setTimeout(serverlist, 20000);
+}
 
 bot.on("disconnected", function () {
     console.log("Disconnected from Discord");
@@ -48,8 +60,10 @@ bot.on("message", function (message) {
 		}
 		
         if (cmdTxt === "join") {
-			if (!inChannel) {
-				const voiceChannel = message.member.voiceChannel;
+const voiceChannel = message.member.voiceChannel;
+if (!voiceChannel) {
+					return message.reply(`Please be in a voice channel first!`);
+				}
 				if (message.member.hasPermission("MANAGE_GUILD") == true || message.author.id == config.owner) {
 					bot.user.setStatus("online")
 					inChannel = true;
@@ -66,20 +80,15 @@ bot.on("message", function (message) {
 					message.reply(`Sorry you must have the "Manage Server" permission in order to use.`)
 					return
 				}
-				if (!voiceChannel) {
-					return message.reply(`Please be in a voice channel first!`);
-				}
 			}
-		}
         
         if (cmdTxt === "leave") {
-            if (inChannel) {
+const voiceChannel = message.member.voiceChannel;
+            if (voiceChannel) {
 				if (message.member.hasPermission("MANAGE_GUILD") == true || message.author.id == config.owner) {
-					const voiceChannel = message.member.voiceChannel;
 					message.channel.sendMessage("Voice channel successfully left!")
 					bot.user.setStatus("idle");
 					message.member.voiceChannel.leave();
-					inChannel = false;
 					return
 				}
 				if (message.member.hasPermission("MANAGE_GUILD") == false) {
@@ -87,7 +96,7 @@ bot.on("message", function (message) {
 					return
 				}
             }
-			if (!inChannel) {
+			if (!voiceChannel) {
 				if (message.member.hasPermission("MANAGE_GUILD") == false) {
 					message.reply(`Sorry you must have the "Manage Server" permission in order to use.`)
 					return

@@ -78,7 +78,7 @@ bot.on("message", function (message) {
 					const voiceChannel = message.member.voiceChannel;
 					message.channel.sendMessage("Voice channel successfully left!")
 					bot.user.setStatus("idle");
-					voiceChannel.leave();
+					message.member.voiceChannel.leave();
 					inChannel = false;
 					return
 				}

@@ -18,7 +18,7 @@ Shows a real basic usage help.
 # Run it with your own custom Bot or something
 * Clone the Git or Repo or whatnot
 * Create a Discord OAuth application and bot account
-* Rename/duplicate `config-sample.json` to `config.json` and fill out the relevant information
+* Rename/duplicate `config.json.example` to `config.json` and fill out the relevant information
 * Install Discord JS using Node JS and the command `npm install discord.js`
 * Make sure Discord JS is up to date
 * Download [FFMPEG](https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20170123-e371f03-win64-static.zip)

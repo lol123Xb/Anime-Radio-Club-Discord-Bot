@@ -1,4 +1,4 @@
-![ANIMERADIO.club](https://lh6.googleusercontent.com/VNcVC8IsRRfTH8urUaRHQJHHj59MpKzTA3TJYOmQBP12zagA_j7xAZI0gNCM4ApTtLJhkCvawETb1uQ=w1920-h950-rw)
+![ANIMERADIO.club](http://i.imgur.com/hKeinVM.jpg)
 
 # Official ANIMERADIO.club Discord Bot
 The official Anime Radio Club Discord bot!!! Made with Discord.js

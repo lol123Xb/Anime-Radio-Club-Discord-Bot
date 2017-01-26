@@ -68,7 +68,6 @@ bot.on("message", function(message) {
             }
             if (message.member.hasPermission("MANAGE_GUILD") == true || message.author.id == config.owner) {
                 bot.user.setStatus("online")
-                inChannel = true;
                 message.channel.sendMessage("Voice channel successfully joined!")
                 message.member.voiceChannel.join().then(connection => {
                         require('http').get("http://streaming.radionomy.com/AnimeRadioClub?lang=en-US%2cen%3bq%3d0.8", (res) => {

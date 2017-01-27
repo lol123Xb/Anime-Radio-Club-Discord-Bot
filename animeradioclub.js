@@ -14,13 +14,13 @@ bot.on("ready", function() {
 function serverlist() {
     bot.user.setGame(`on ${bot.guilds.size} servers`);
 
-    return setInterval(listenerlist, 10000);
+    setInterval(listenerlist, 10000);
 }
 
 function listenerlist() {
     bot.user.setGame(`for ${listeners} people`);
 
-    return setInterval(serverlist, 10000);
+    setInterval(serverlist, 10000);
 }
 
 setInterval(() => {

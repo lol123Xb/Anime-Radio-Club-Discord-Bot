@@ -4,7 +4,7 @@ var config = require("./config.json");
 
 var bot = new Discord.Client();
 
-var inChannel = false;
+let listeners = 0;
 
 bot.on("ready", function() {
     console.log("Anime Radio Club Bot is up and running on " + bot.guilds.size + " servers");
@@ -14,14 +14,24 @@ bot.on("ready", function() {
 function serverlist() {
     bot.user.setGame(`on ${bot.guilds.size} servers`);
 
-    return setTimeout(serverlist2, 10000);
+    return setInterval(listenerlist, 10000);
 }
 
-function serverlist2() {
-    bot.user.setGame(`on ${bot.guilds.size} servers`);
+function listenerlist() {
+    bot.user.setGame(`for ${listeners} people`);
 
-    return setTimeout(serverlist, 20000);
+    return setInterval(serverlist, 10000);
 }
+
+setInterval(() => {
+    try {
+        listeners = bot.voiceConnections
+            .map(vc => vc.channel.members.filter(me => !(me.user.bot || me.selfDeaf || me.deaf)).size)
+            .reduce((sum, members) => sum + members);
+    } catch (error) {
+        listeners = 0;
+    }
+}, 30000);
 
 bot.on("disconnected", function() {
     console.log("Disconnected from Discord");

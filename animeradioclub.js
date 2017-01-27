@@ -4,11 +4,19 @@ var config = require("./config.json");
 
 var bot = new Discord.Client();
 
+const winston = require('winston');
+
+const oneLine = require('common-tags').oneLine;
+
 let listeners = 0;
 
 bot.on("ready", function() {
-    console.log("Anime Radio Club Bot is up and running on " + bot.guilds.size + " servers");
-    bot.user.setGame(serverlist());
+    winston.info(oneLine `
+			CLIENT: Anime Radio Club ready!
+			${bot.user.username}#${bot.user.discriminator} (ID: ${bot.user.id})
+			Currently in ${bot.guilds.size} servers.
+		`);
+    serverlist();
 });
 
 function serverlist() {

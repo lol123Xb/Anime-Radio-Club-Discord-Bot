@@ -29,6 +29,8 @@ Shows a real basic usage help.
 
 # Troubleshooting
 * If you get an error regarding `Opus-Engine` just do `npm install opusscript` and all should be fine.
+* If the bot stops playing music, check to see if the website says that there are at least 1 or more listeners and then use `=join`.
+* If the bot still does not play any music, try `=leave` and then `=join`.
 
 # Extra goodness
 Join our [Discord](https://discord.gg/WCxHjFX) channel or [Invite](https://discordapp.com/oauth2/authorize?client_id=273299834470006786&scope=bot&permissions=36702208) our bot to your server!

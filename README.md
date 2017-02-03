@@ -13,7 +13,7 @@ Type this to get the bot to leave the voice channel. Once again, limited to user
 * `=np`
 Supposed to show currently playing song. (Work in progress)
 * `=pfix [new prefix]`
-Type this in case your server has a bot that already uses the `=` sign as their prefix.
+Type this in case your server has a bot that already uses the `=` sign as their prefix. (Work in progress)
 * `=help`
 Shows a real basic usage help.
 

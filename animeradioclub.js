@@ -16,19 +16,13 @@ bot.on("ready", function() {
 			${bot.user.username}#${bot.user.discriminator} (ID: ${bot.user.id})
 			Currently in ${bot.guilds.size} servers.
 		`);
-    serverlist();
+    list();
 });
 
-function serverlist() {
-    bot.user.setGame(`on ${bot.guilds.size} servers`);
+function list() {
+    bot.user.setGame(`for ${listeners} on ${bot.guilds.size} servers`);
 
-    setInterval(listenerlist, 10000);
-}
-
-function listenerlist() {
-    bot.user.setGame(`for ${listeners} people`);
-
-    setInterval(serverlist, 10000);
+    return setTimeout(list, 10000);
 }
 
 setInterval(() => {
@@ -48,7 +42,7 @@ bot.on("disconnected", function() {
 
 bot.on("message", function(message) {
     if (message.author.id != bot.user.id && (message.content[0] === "=" || message.content.indexOf(bot.user.toString()) == 0)) {
-        //console.log("Incoming command '" + message.content + "' from user " + message.author);
+        console.log("Incoming command '" + message.content + "' from user " + message.author);
         var cmdTxt = message.content.split(" ")[0].substring(1);
         var suffix = message.content.substring(cmdTxt.length + 2);
         if (message.content.indexOf(bot.user.toString()) == 0) {
@@ -78,6 +72,15 @@ bot.on("message", function(message) {
                 color: 3447003
             });
         }
+
+        if (cmdTxt === "np") {
+            message.reply(`Sorry, this command is currently work in progress so it will not work right now.`);
+        }
+
+        if (cmdTxt === "pfix") {
+            message.reply(`Sorry, this command is currently work in progress so it will not work right now.`);
+        }
+
 
         if (cmdTxt === "join") {
             const voiceChannel = message.member.voiceChannel;

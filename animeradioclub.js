@@ -66,9 +66,7 @@ bot.on("message", function(message) {
 					**\\=leave**: Leaves the voice channel the bot is currently in.
 					**\\=np**: Displays the currently playing song. (WIP)
 					**Github:**
-					https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot
-					**Extra Notes:**
-					If bot is not playing any audio when left alone in a voice channel with no listeners, yet displays the fact that it is talking, use **\\=join** or get someone with the \`Manage Server\` permission to use this command and the bot should start playing audio again.`,
+					https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot`,
                 color: 3447003
             });
         }

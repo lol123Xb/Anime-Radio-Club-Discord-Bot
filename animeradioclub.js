@@ -41,7 +41,7 @@ bot.on("disconnected", function() {
 });
 
 bot.on("message", function(message) {
-    if (message.author.id != bot.user.id && (message.content[0] === "=" || message.content.indexOf(bot.user.toString()) == 0)) {
+    if (message.author.id != bot.user.id && (message.content[0] === config.prefix || message.content[0] === config.backup_prefix || message.content.indexOf(bot.user.toString()) == 0)) {
         console.log("Incoming command '" + message.content + "' from user " + message.author);
         var cmdTxt = message.content.split(" ")[0].substring(1);
         var suffix = message.content.substring(cmdTxt.length + 2);
@@ -65,6 +65,7 @@ bot.on("message", function(message) {
 					**\\=join**: Joins the voice channel you are currently in.
 					**\\=leave**: Leaves the voice channel the bot is currently in.
 					**\\=np**: Displays the currently playing song. (WIP)
+					**\\=pfix**: Changes the global prefix.
 					**Github:**
 					https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot`,
                 color: 3447003
@@ -76,9 +77,14 @@ bot.on("message", function(message) {
         }
 
         if (cmdTxt === "pfix") {
-            message.reply(`Sorry, this command is currently work in progress so it will not work right now.`);
+            if (message.member.hasPermission("MANAGE_GUILD") == true || message.author.id == config.owner) {
+                message.reply("**Note:**\nIf you set the prefix to more than One character, the commands will stop working. Please use our backup prefix to fix this by changing your prefix without needing to restart the bot.\n**Backup prefix:** " + `\`${config.backup_prefix}\``)
+                var newpfix = message.content.substring(cmdTxt.length + 2);
+                config.prefix = newpfix;
+                winston.info(oneLine `Prefix changed to` + " " + newpfix)
+                message.reply(`Prefix changed to` + " `" + newpfix + "`");
+            }
         }
-
 
         if (cmdTxt === "join") {
             const voiceChannel = message.member.voiceChannel;
@@ -101,6 +107,7 @@ bot.on("message", function(message) {
                 return
             }
         }
+
 
         if (cmdTxt === "leave") {
             const voiceChannel = message.member.voiceChannel;

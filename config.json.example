@@ -1,6 +1,6 @@
 {
-    "token": "",
-    "owner": "172864752865902592",
+    "token": "token id",
+    "owner": "owner id",
     "prefix": "=",
     "backup_prefix": "<"
 }

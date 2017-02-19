@@ -50,11 +50,14 @@ bot.on("message", function(message) {
         }
 
         if (cmdTxt === "help") {
-            message.channel.sendEmbed({
-                description: `**ANIMERADIO.club Discord bot by Felix**
+            const embed = new Discord.RichEmbed()
+                .setTitle('ANIMERADIO.club Discord Bot')
+                .setAuthor('Felix', 'http://orig13.deviantart.net/f7a2/f/2016/343/a/b/isana_yashiro_minimal_icon_by_lol123xb-dar48hx.jpg')
+                .setColor(3447003)
+                .setDescription(`
 					**Statistics:**
 					Listeners: ${listeners}
-					Servers: ${bot.guilds.size}
+					Servers: ${bot.guilds.size}		
 					**Usage:**
 					After adding me to your server, join a voice channel and type \`${config.prefix}join\` to bind me to that voice channel.
 					Keep in mind that you need to have the \`Manage Server\` permission to use this command.
@@ -64,9 +67,12 @@ bot.on("message", function(message) {
 					**\\${config.prefix}np**: Displays the currently playing song. (WIP)
 					**\\${config.prefix}pfix**: Changes the global prefix.
 					**Github:**
-					https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot`,
-                color: 3447003
-            });
+					https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot`)
+                .setThumbnail(bot.user.avatarURL)
+
+            message.channel.sendEmbed(
+                embed
+            );
         }
 
         if (cmdTxt === "np") {

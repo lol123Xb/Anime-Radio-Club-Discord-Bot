@@ -59,13 +59,13 @@ bot.on("message", function(message) {
             message.channel.sendEmbed({
                 description: `**ANIMERADIO.club Discord bot by Felix**
 					**Usage:**
-					After adding me to your server, join a voice channel and type \`=join\` to bind me to that voice channel.
+					After adding me to your server, join a voice channel and type \`${config.prefix}join\` to bind me to that voice channel.
 					Keep in mind that you need to have the \`Manage Server\` permission to use this command.
 					**Commands:**
-					**\\=join**: Joins the voice channel you are currently in.
-					**\\=leave**: Leaves the voice channel the bot is currently in.
-					**\\=np**: Displays the currently playing song. (WIP)
-					**\\=pfix**: Changes the global prefix.
+					**\\${config.prefix}join**: Joins the voice channel you are currently in.
+					**\\${config.prefix}leave**: Leaves the voice channel the bot is currently in.
+					**\\${config.prefix}np**: Displays the currently playing song. (WIP)
+					**\\${config.prefix}pfix**: Changes the global prefix.
 					**Github:**
 					https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot`,
                 color: 3447003

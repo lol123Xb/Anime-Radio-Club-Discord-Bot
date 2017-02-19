@@ -16,14 +16,8 @@ bot.on("ready", function() {
 			${bot.user.username}#${bot.user.discriminator} (ID: ${bot.user.id})
 			Currently in ${bot.guilds.size} servers.
 		`);
-    list();
+    bot.user.setGame(`Type <help`);
 });
-
-function list() {
-    bot.user.setGame(`for ${listeners} on ${bot.guilds.size} servers`);
-
-    return setTimeout(list, 10000);
-}
 
 setInterval(() => {
     try {
@@ -58,6 +52,9 @@ bot.on("message", function(message) {
         if (cmdTxt === "help") {
             message.channel.sendEmbed({
                 description: `**ANIMERADIO.club Discord bot by Felix**
+					**Statistics:**
+					Listeners: ${listeners}
+					Servers: ${bot.guilds.size}
 					**Usage:**
 					After adding me to your server, join a voice channel and type \`${config.prefix}join\` to bind me to that voice channel.
 					Keep in mind that you need to have the \`Manage Server\` permission to use this command.

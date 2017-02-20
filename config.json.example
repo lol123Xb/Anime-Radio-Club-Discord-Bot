@@ -2,5 +2,5 @@
     "token": "token id",
     "owner": "owner id",
     "prefix": "=",
-    "backup_prefix": "<"
+    "backup_prefix": ">"
 }

@@ -16,7 +16,7 @@ bot.on("ready", function() {
 			${bot.user.username}#${bot.user.discriminator} (ID: ${bot.user.id})
 			Currently in ${bot.guilds.size} servers.
 		`);
-    bot.user.setGame(`Type <help`);
+    bot.user.setGame(`Type >help`);
 });
 
 setInterval(() => {
@@ -54,10 +54,7 @@ bot.on("message", function(message) {
                 .setTitle('ANIMERADIO.club Discord Bot')
                 .setAuthor('Felix', 'http://orig13.deviantart.net/f7a2/f/2016/343/a/b/isana_yashiro_minimal_icon_by_lol123xb-dar48hx.jpg')
                 .setColor(3447003)
-                .setDescription(`
-					**Statistics:**
-					Listeners: ${listeners}
-					Servers: ${bot.guilds.size}		
+                .setDescription(`	
 					**Usage:**
 					After adding me to your server, join a voice channel and type \`${config.prefix}join\` to bind me to that voice channel.
 					Keep in mind that you need to have the \`Manage Server\` permission to use this command.
@@ -74,6 +71,22 @@ bot.on("message", function(message) {
                 embed
             );
         }
+
+	   if (cmdTxt === "stats") {
+            const embed = new Discord.RichEmbed()
+                .setTitle('ANIMERADIO.club Discord Bot')
+                .setAuthor('Felix', 'http://orig13.deviantart.net/f7a2/f/2016/343/a/b/isana_yashiro_minimal_icon_by_lol123xb-dar48hx.jpg')
+                .setColor(3447003)
+                .setDescription(`
+					**Statistics:**
+					Listeners: ${listeners}
+					Servers: ${bot.guilds.size}                .setThumbnail(bot.user.avatarURL)
+
+            message.channel.sendEmbed(
+                embed
+            );
+        }
+
 
         if (cmdTxt === "np") {
             message.reply(`Sorry, this command is currently work in progress so it will not work right now.`);

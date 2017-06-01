@@ -23,7 +23,7 @@ Shows a real basic usage help.
 * Rename/duplicate `config.json.example` to `config.json` and fill out the relevant information
 * Install Discord JS using Node JS and the command `npm install discord.js`
 * Make sure Discord JS is up to date
-* Download [FFMPEG](https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20170123-e371f03-win64-static.zip)
+* Download [FFMPEG](https://ffmpeg.zeranoe.com/builds/)
 * Take the files from the first folder which should be named "Bin" and put it in the same folder as the Bot
 * Install Winston with `npm install winston`
 * Install Common-Tags with `npm install common-tags`

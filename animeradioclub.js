@@ -44,7 +44,7 @@ bot.on("message", function(message) {
                 cmdTxt = message.content.split(" ")[1];
                 suffix = message.content.substring(bot.user.toString().length + cmdTxt.length + 2);
             } catch (e) {
-                bot.sendMessage(message.channel, "Yes?");
+                message.channel.send("Yes?");
                 return;
             }
         }

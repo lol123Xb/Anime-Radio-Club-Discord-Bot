@@ -55,16 +55,16 @@ bot.on("message", function(message) {
                 .setAuthor('Felix', 'http://orig13.deviantart.net/f7a2/f/2016/343/a/b/isana_yashiro_minimal_icon_by_lol123xb-dar48hx.jpg')
                 .setColor(3447003)
                 .setDescription(`	
-					**Usage:**
-					After adding me to your server, join a voice channel and type \`${config.prefix}join\` to bind me to that voice channel.
-					Keep in mind that you need to have the \`Manage Server\` permission to use this command.
-					**Commands:**
-					**\\${config.prefix}join**: Joins the voice channel you are currently in.
-					**\\${config.prefix}leave**: Leaves the voice channel the bot is currently in.
-					**\\${config.prefix}np**: Displays the currently playing song. (WIP)
-					**\\${config.prefix}pfix**: Changes the global prefix.
-					**Github:**
-					https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot`)
+				**Usage:**
+				After adding me to your server, join a voice channel and type \`${config.prefix}join\` to bind me to that voice channel.
+				Keep in mind that you need to have the \`Manage Server\` permission to use this command.
+				**Commands:**
+				**\\${config.prefix}join**: Joins the voice channel you are currently in.
+				**\\${config.prefix}leave**: Leaves the voice channel the bot is currently in.
+				**\\${config.prefix}np**: Displays the currently playing song. (WIP)
+				**\\${config.prefix}pfix**: Changes the global prefix.
+				**Github:**
+				https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot`)
                 .setThumbnail(bot.user.avatarURL)
 
             message.channel.sendEmbed(
@@ -78,9 +78,9 @@ bot.on("message", function(message) {
                 .setAuthor('Felix', 'http://orig13.deviantart.net/f7a2/f/2016/343/a/b/isana_yashiro_minimal_icon_by_lol123xb-dar48hx.jpg')
                 .setColor(3447003)
                 .setDescription(`
-					**Statistics:**
-					Listeners: ${listeners}
-					Servers: ${bot.guilds.size}`)
+				**Statistics:**
+				Listeners: ${listeners}
+				Servers: ${bot.guilds.size}`)
                 .setThumbnail(bot.user.avatarURL)
 
             message.channel.sendEmbed(
@@ -110,7 +110,7 @@ bot.on("message", function(message) {
             }
             if (message.member.hasPermission("MANAGE_GUILD") == true || message.author.id == config.owner) {
                 bot.user.setStatus("online")
-                message.channel.sendMessage("Voice channel successfully joined!")
+                message.channel.send("Voice channel successfully joined!")
                 message.member.voiceChannel.join().then(connection => {
                         require('http').get("http://streaming.radionomy.com/AnimeRadioClub?lang=en-US%2cen%3bq%3d0.8", (res) => {
                             connection.playStream(res);
@@ -130,7 +130,7 @@ bot.on("message", function(message) {
             const voiceChannel = message.member.voiceChannel;
             if (voiceChannel) {
                 if (message.member.hasPermission("MANAGE_GUILD") == true || message.author.id == config.owner) {
-                    message.channel.sendMessage("Voice channel successfully left!")
+                    message.channel.send("Voice channel successfully left!")
                     bot.user.setStatus("idle");
                     message.member.voiceChannel.leave();
                     return

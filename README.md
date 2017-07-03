@@ -36,4 +36,3 @@ Shows a real basic usage help.
 
 # Extra goodness
 Join our [Discord](https://discord.gg/WCxHjFX) channel or [Invite](https://discordapp.com/oauth2/authorize?client_id=273299834470006786&scope=bot&permissions=36702208) our bot to your server!
-Also support us on [Patreon](http://patreon.com/animeradioclub)!

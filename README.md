@@ -3,9 +3,9 @@
 # Official ANIMERADIO.club Discord Bot
 The official Anime Radio Club Discord bot!!! Made with Discord.js
 # Usage
-After you've added the bot to your server, join a voice channel and type `=join` to bind the bot to that channel. You have to have the "Manage server" permission to use this command.
+After you've added the bot to your server, join a voice channel and type `>join` to bind the bot to that channel. You have to have the "Manage server" permission to use this command.
 # Command list
-This list uses `=` as the prefix for each
+This list uses `>` as the prefix for each
 * `>join`
 Type this while in a voice channel to have the bot join that channel and start playing there. Limited to users with the "manage server" permission.
 * `>leave`
@@ -31,7 +31,7 @@ Shows a real basic usage help.
 
 # Troubleshooting
 * If you get an error regarding `Opus-Engine` just do `npm install opusscript` and all should be fine.
-* If the bot stops playing music, check to see if the website says that there are at least 1 or more listeners and then use `=join`.
+* If the bot stops playing music, check to see if the website says that there are at least 1 or more listeners and then use `>join`.
 * If the bot still does not play any music, try `>leave` and then `>join`.
 
 # Extra goodness

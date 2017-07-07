@@ -54,19 +54,12 @@ bot.on("message", function(message) {
                 .setTitle('ANIMERADIO.club Discord Bot')
                 .setAuthor('Felix', 'http://orig13.deviantart.net/f7a2/f/2016/343/a/b/isana_yashiro_minimal_icon_by_lol123xb-dar48hx.jpg')
                 .setColor(3447003)
-                .setDescription(`**Usage:**
-After adding me to your server, join a voice channel and type \`${config.prefix}join\` to bind me to that voice channel.
-Keep in mind that you need to have the \`Manage Server\` permission to use this command.
-**Commands:**
-**\\${config.prefix}join**: Joins the voice channel you are currently in.
-**\\${config.prefix}leave**: Leaves the voice channel the bot is currently in.
-**\\${config.prefix}np**: Displays the currently playing song. (WIP)
-**\\${config.prefix}pfix**: Changes the global prefix.
-**Github:**
-https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot`)
+                .addField(`**Usage:**`, `After adding me to your server, join a voice channel and type \`${config.prefix}join\` to bind me to that voice channel. \nKeep in mind that you need to have the \`Manage Server\` permission to use this command.`)
+	        	.addField(`**Commands:**`, `\n**\\${config.prefix}join**: Joins the voice channel you are currently in. \n**\\${config.prefix}leave**: Leaves the voice channel the bot is currently in. \n**\\${config.prefix}np**: Displays the currently playing song. (WIP) \n**\\${config.prefix}pfix**: Changes the global prefix.`)
+		        .addField(`**Github:**`, `https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot`)
                 .setThumbnail(bot.user.avatarURL)
 
-            message.channel.sendEmbed(
+                message.channel.sendEmbed(
                 embed
             );
         }
@@ -76,9 +69,11 @@ https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot`)
                 .setTitle('ANIMERADIO.club Discord Bot')
                 .setAuthor('Felix', 'http://orig13.deviantart.net/f7a2/f/2016/343/a/b/isana_yashiro_minimal_icon_by_lol123xb-dar48hx.jpg')
                 .setColor(3447003)
-                .setDescription(`**Statistics:**
-			Listeners: ${listeners}
-			Servers: ${bot.guilds.size}`)
+                .addField(`:musical_note:  Listeners:`, `${listeners}`, true)
+                .addField(`:desktop:  Servers:`, `${bot.guilds.size}`, true)
+                .addField(':computer: Join Server', 'http://discord.gg/WCxHjFX', true)
+                .addField(':bust_in_silhouette: Invite Bot', 'https://goo.gl/ZjGBn7', true)
+                
                 .setThumbnail(bot.user.avatarURL)
 
             message.channel.sendEmbed(

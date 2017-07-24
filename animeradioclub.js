@@ -99,7 +99,8 @@ bot.on("message", function(message) {
         if (cmdTxt === "join") {
             const voiceChannel = message.member.voiceChannel;
             if (!voiceChannel) {
-                return message.reply(`Please be in a voice channel first!`);
+                message.reply(`Please be in a voice channel first!`);
+                return
             }
             if (message.member.hasPermission("MANAGE_GUILD") == true || message.author.id == config.owner) {
                 bot.user.setStatus("online")
@@ -112,7 +113,6 @@ bot.on("message", function(message) {
             }
             if (message.member.hasPermission("MANAGE_GUILD") == false) {
                 message.reply(`Sorry you must have the "Manage Server" permission in order to use.`)
-                return
             }
         }
 

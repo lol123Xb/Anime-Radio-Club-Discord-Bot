@@ -10,6 +10,9 @@ const oneLine = require('common-tags').oneLine;
 
 let listeners = 0;
 
+const ytdl = require('ytdl-core')
+let stream = ytdl("https://www.youtube.com/watch?v=L9DfhFh19Ds")
+
 bot.on("ready", function() {
     winston.info(oneLine `
 			CLIENT: Anime Radio Club ready!
@@ -106,10 +109,10 @@ bot.on("message", function(message) {
                 bot.user.setStatus("online")
                 message.channel.send("Voice channel successfully joined!")
                 message.member.voiceChannel.join().then(connection => {
-                        require('http').get("http://streaming.radionomy.com/AnimeRadioClub?lang=en-US%2cen%3bq%3d0.8", (res) => {
-                            connection.playStream(res);
+                        message.member.voiceChannel.join().then(connection => {
+                            connection.playStream(stream);
                         })
-                    })
+                })
             }
             if (message.member.hasPermission("MANAGE_GUILD") == false) {
                 message.reply(`Sorry you must have the "Manage Server" permission in order to use.`)

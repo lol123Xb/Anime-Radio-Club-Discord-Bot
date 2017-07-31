@@ -11,7 +11,10 @@ const oneLine = require('common-tags').oneLine;
 let listeners = 0;
 
 const ytdl = require('ytdl-core')
-let stream = ytdl("https://www.youtube.com/watch?v=pWLIymnjUI8")
+let stream = ytdl("https://www.youtube.com/watch?v=G8vUtKAGu1A")
+
+const fs = require('fs')
+const request = require("request");
 
 bot.on("ready", function() {
     winston.info(oneLine `
@@ -19,7 +22,7 @@ bot.on("ready", function() {
 			${bot.user.username}#${bot.user.discriminator} (ID: ${bot.user.id})
 			Currently in ${bot.guilds.size} servers.
 		`);
-    bot.user.setGame(`Type >help`);
+    bot.user.setGame(`Type >help`, "https://www.twitch.tv/24_7_chill_piano");
 });
 
 setInterval(() => {
@@ -27,7 +30,8 @@ setInterval(() => {
         listeners = bot.voiceConnections
             .map(vc => vc.channel.members.filter(me => !(me.user.bot || me.selfDeaf || me.deaf)).size)
             .reduce((sum, members) => sum + members);
-    } catch (error) {
+    }
+    catch (error) {
         listeners = 0;
     }
 }, 30000);
@@ -46,7 +50,8 @@ bot.on("message", function(message) {
             try {
                 cmdTxt = message.content.split(" ")[1];
                 suffix = message.content.substring(bot.user.toString().length + cmdTxt.length + 2);
-            } catch (e) {
+            }
+            catch (e) {
                 message.channel.send("Yes?");
                 return;
             }
@@ -58,11 +63,11 @@ bot.on("message", function(message) {
                 .setAuthor('Felix', 'http://orig13.deviantart.net/f7a2/f/2016/343/a/b/isana_yashiro_minimal_icon_by_lol123xb-dar48hx.jpg')
                 .setColor(3447003)
                 .addField(`**Usage:**`, `After adding me to your server, join a voice channel and type \`${config.prefix}join\` to bind me to that voice channel. \nKeep in mind that you need to have the \`Manage Server\` permission to use this command.`)
-	        	.addField(`**Commands:**`, `\n**\\${config.prefix}join**: Joins the voice channel you are currently in. \n**\\${config.prefix}leave**: Leaves the voice channel the bot is currently in. \n**\\${config.prefix}np**: Displays the currently playing song. (WIP) \n**\\${config.prefix}pfix**: Changes the global prefix.`)
-		        .addField(`**Github:**`, `https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot`)
+                .addField(`**Commands:**`, `\n**\\${config.prefix}join**: Joins the voice channel you are currently in. \n**\\${config.prefix}leave**: Leaves the voice channel the bot is currently in. \n**\\${config.prefix}np**: Displays the currently playing song. (WIP) \n**\\${config.prefix}pfix**: Changes the global prefix.`)
+                .addField(`**Github:**`, `https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot`)
                 .setThumbnail(bot.user.avatarURL)
 
-                message.channel.sendEmbed(
+            message.channel.sendEmbed(
                 embed
             );
         }
@@ -76,8 +81,8 @@ bot.on("message", function(message) {
                 .addField(`:desktop:  Servers:`, `${bot.guilds.size}`, true)
                 .addField(':computer: Join Server', 'http://discord.gg/WCxHjFX', true)
                 .addField(':bust_in_silhouette: Invite Bot', 'https://goo.gl/ZjGBn7', true)
-                
-                .setThumbnail(bot.user.avatarURL)
+
+            .setThumbnail(bot.user.avatarURL)
 
             message.channel.sendEmbed(
                 embed
@@ -86,7 +91,17 @@ bot.on("message", function(message) {
 
 
         if (cmdTxt === "np") {
-            message.reply(`Sorry, this command is currently work in progress so it will not work right now. So just check on this link here, what is currently playing: <https://www.radionomy.com/en/radio/animeradioclub/index>`);
+            request('https://dl.dropbox.com/s/63g5bi02b1o6sxk/Snip.txt').pipe(fs.createWriteStream('piano.txt'))
+            message.channel.startTyping();
+            for (i = 0; i < (1); i++) {
+                setTimeout(function() {
+                    fs.readFile('piano.txt', 'utf8', function(err, fileContents) {
+                        if (err) throw err;
+                        message.channel.send(fileContents)
+                    });
+                }, 3 * 1000)
+            }
+            message.channel.stopTyping();
         }
 
         if (cmdTxt === "pfix") {
@@ -109,9 +124,9 @@ bot.on("message", function(message) {
                 bot.user.setStatus("online")
                 message.channel.send("Voice channel successfully joined!")
                 message.member.voiceChannel.join().then(connection => {
-                        message.member.voiceChannel.join().then(connection => {
-                            connection.playStream(stream);
-                        })
+                    message.member.voiceChannel.join().then(connection => {
+                        connection.playStream(stream);
+                    })
                 })
             }
             if (message.member.hasPermission("MANAGE_GUILD") == false) {

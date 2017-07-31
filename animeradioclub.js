@@ -11,7 +11,7 @@ const oneLine = require('common-tags').oneLine;
 let listeners = 0;
 
 const ytdl = require('ytdl-core')
-let stream = ytdl("https://www.youtube.com/watch?v=L9DfhFh19Ds")
+let stream = ytdl("https://www.youtube.com/watch?v=pWLIymnjUI8")
 
 bot.on("ready", function() {
     winston.info(oneLine `

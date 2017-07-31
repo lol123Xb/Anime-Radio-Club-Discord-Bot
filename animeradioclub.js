@@ -89,7 +89,6 @@ bot.on("message", function(message) {
             );
         }
 
-
         if (cmdTxt === "np") {
             request('https://dl.dropbox.com/s/63g5bi02b1o6sxk/Snip.txt').pipe(fs.createWriteStream('piano.txt'))
             message.channel.startTyping();
@@ -97,7 +96,7 @@ bot.on("message", function(message) {
                 setTimeout(function() {
                     fs.readFile('piano.txt', 'utf8', function(err, fileContents) {
                         if (err) throw err;
-                        message.channel.send(fileContents)
+                        message.channel.send(":notes: Now playing\n```" + fileContents + "```\n**By the way, the livestream starts 4 hours before the live part for Youtube livestreams. I have no idea how to fix that so the now playing doesn't 100% reflect what AnimeRadioClub is currently playing.**")
                     });
                 }, 3 * 1000)
             }

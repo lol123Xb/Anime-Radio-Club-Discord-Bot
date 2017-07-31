@@ -63,7 +63,7 @@ bot.on("message", function(message) {
                 .setAuthor('Felix', 'http://orig13.deviantart.net/f7a2/f/2016/343/a/b/isana_yashiro_minimal_icon_by_lol123xb-dar48hx.jpg')
                 .setColor(3447003)
                 .addField(`**Usage:**`, `After adding me to your server, join a voice channel and type \`${config.prefix}join\` to bind me to that voice channel. \nKeep in mind that you need to have the \`Manage Server\` permission to use this command.`)
-                .addField(`**Commands:**`, `\n**\\${config.prefix}join**: Joins the voice channel you are currently in. \n**\\${config.prefix}leave**: Leaves the voice channel the bot is currently in. \n**\\${config.prefix}np**: Displays the currently playing song. (WIP) \n**\\${config.prefix}pfix**: Changes the global prefix.`)
+                .addField(`**Commands:**`, `\n**\\${config.prefix}join**: Joins the voice channel you are currently in. \n**\\${config.prefix}leave**: Leaves the voice channel the bot is currently in. \n**\\${config.prefix}np**: Displays the currently playing song. \n**\\${config.prefix}pfix**: Changes the global prefix.`)
                 .addField(`**Github:**`, `https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot`)
                 .setThumbnail(bot.user.avatarURL)
 
@@ -120,7 +120,7 @@ bot.on("message", function(message) {
                 message.reply(`Please be in a voice channel first!`);
                 return
             }
-            if (message.member.hasPermission("MANAGE_GUILD") == true || message.author.id == config.owner) {
+            else {
                 bot.user.setStatus("online")
                 message.channel.send("Voice channel successfully joined!")
                 message.member.voiceChannel.join().then(connection => {
@@ -129,25 +129,16 @@ bot.on("message", function(message) {
                     })
                 })
             }
-            if (message.member.hasPermission("MANAGE_GUILD") == false) {
-                message.reply(`Sorry you must have the "Manage Server" permission in order to use.`)
-            }
         }
 
 
         if (cmdTxt === "leave") {
             const voiceChannel = message.member.voiceChannel;
             if (voiceChannel) {
-                if (message.member.hasPermission("MANAGE_GUILD") == true || message.author.id == config.owner) {
-                    message.channel.send("Voice channel successfully left!")
-                    bot.user.setStatus("idle");
-                    message.member.voiceChannel.leave();
-                    return
-                }
-                if (message.member.hasPermission("MANAGE_GUILD") == false) {
-                    message.reply(`Sorry you must have the "Manage Server" permission in order to use.`)
-                    return
-                }
+                message.channel.send("Voice channel successfully left!")
+                bot.user.setStatus("idle");
+                message.member.voiceChannel.leave();
+                return
             }
             if (!voiceChannel) {
                 if (message.member.hasPermission("MANAGE_GUILD") == false) {

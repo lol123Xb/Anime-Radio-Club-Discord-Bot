@@ -63,7 +63,7 @@ bot.on("message", function(message) {
                 .setAuthor('Felix', 'http://orig13.deviantart.net/f7a2/f/2016/343/a/b/isana_yashiro_minimal_icon_by_lol123xb-dar48hx.jpg')
                 .setColor(3447003)
                 .addField(`**Usage:**`, `After adding me to your server, join a voice channel and type \`${config.prefix}join\` to bind me to that voice channel. \nKeep in mind that you need to have the \`Manage Server\` permission to use this command.`)
-                .addField(`**Commands:**`, `\n**\\${config.prefix}join**: Joins the voice channel you are currently in. \n**\\${config.prefix}leave**: Leaves the voice channel the bot is currently in. \n**\\${config.prefix}np**: Displays the currently playing song. \n**\\${config.prefix}pfix**: Changes the global prefix.`)
+                .addField(`**Commands:**`, `\n**\\${config.prefix}join**: Joins the voice channel you are currently in. \n**\\${config.prefix}leave**: Leaves the voice channel the bot is currently in. \n**\\${config.prefix}np**: Displays the currently playing song. \n**\\${config.prefix}pfix**: Changes the global prefix.\n**\\${config.prefix}volume**: Change the volume of the bot.`)
                 .addField(`**Github:**`, `https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot`)
                 .setThumbnail(bot.user.avatarURL)
 
@@ -111,6 +111,22 @@ bot.on("message", function(message) {
                 winston.info(oneLine `Prefix changed to` + " " + newpfix)
                 message.reply(`Prefix changed to` + " `" + newpfix + "`");
             }
+        }
+
+        if (cmdTxt === "volume") {
+            var input = message.content.substring(cmdTxt.length + 2);
+
+            const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == message.guild.id);
+            if (voiceConnection === null) return message.channel.send('```Not in a voice channel.```');
+
+            const dispatcher = voiceConnection.player.dispatcher;
+
+            if (input > 200 || input < 0) return message.channel.send('```Volume out of range!```').then((response) => {
+                response.delete(5000);
+            });
+
+            message.channel.send("```Volume set to " + input + '```');
+            dispatcher.setVolume((input / 100));
         }
 
         if (cmdTxt === "join") {

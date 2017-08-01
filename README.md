@@ -8,10 +8,10 @@ After you've added the bot to your server, join a voice channel and type `>join`
 This list uses `>` as the prefix for each
 * `>join`
 
-Type this while in a voice channel to have the bot join that channel and start playing there. Limited to users with the "manage server" permission.
+Type this while in a voice channel to have the bot join that channel and start playing there. 
 * `>leave`
 
-Type this to get the bot to leave the voice channel. Once again, limited to users with the "manage server" permission.
+Type this to get the bot to leave the voice channel.
 * `>np`
 
 Shows what is currently playing. Since it uses the Youtube livestream, currently, the song is actually of 4 hours ago and not at the live position. Don't know how to fix that yet, using `ytdl-core`.

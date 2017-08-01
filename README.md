@@ -7,16 +7,22 @@ After you've added the bot to your server, join a voice channel and type `>join`
 # Command list
 This list uses `>` as the prefix for each
 * `>join`
+
 Type this while in a voice channel to have the bot join that channel and start playing there. Limited to users with the "manage server" permission.
 * `>leave`
+
 Type this to get the bot to leave the voice channel. Once again, limited to users with the "manage server" permission.
 * `>np`
+
 Shows what is currently playing. Since it uses the Youtube livestream, currently, the song is actually of 4 hours ago and not at the live position. Don't know how to fix that yet, using `ytdl-core`.
 * `>pfix [new prefix]`
+
 Type this in case your server has a bot that already uses the `=` sign as their prefix. Requires "Manage Server" permission.
 * `>volume`
+
 Change the volume of the bot.
 * `>help`
+
 Shows a real basic usage help.
 
 # Run it with your own custom Bot or something

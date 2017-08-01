@@ -11,9 +11,11 @@ Type this while in a voice channel to have the bot join that channel and start p
 * `>leave`
 Type this to get the bot to leave the voice channel. Once again, limited to users with the "manage server" permission.
 * `>np`
-Supposed to show currently playing song. (Work in progress)
+Shows what is currently playing. Since it uses the Youtube livestream, currently, the song is actually of 4 hours ago and not at the live position. Don't know how to fix that yet, using `ytdl-core`.
 * `>pfix [new prefix]`
 Type this in case your server has a bot that already uses the `=` sign as their prefix. Requires "Manage Server" permission.
+* `>volume`
+Change the volume of the bot.
 * `>help`
 Shows a real basic usage help.
 

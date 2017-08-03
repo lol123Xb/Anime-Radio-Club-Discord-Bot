@@ -11,7 +11,7 @@ const oneLine = require('common-tags').oneLine;
 let listeners = 0;
 
 const ytdl = require('ytdl-core')
-let stream = ytdl("https://www.youtube.com/watch?v=G8vUtKAGu1A")
+let stream = ytdl("https://www.youtube.com/watch?v=ItZWRLmnlrk")
 
 const fs = require('fs')
 const request = require("request");
@@ -82,7 +82,7 @@ bot.on("message", function(message) {
                 .addField(':computer: Join Server', 'http://discord.gg/WCxHjFX', true)
                 .addField(':bust_in_silhouette: Invite Bot', 'https://goo.gl/ZjGBn7', true)
 
-            .setThumbnail(bot.user.avatarURL)
+                .setThumbnail(bot.user.avatarURL)
 
             message.channel.sendEmbed(
                 embed
@@ -123,7 +123,12 @@ bot.on("message", function(message) {
 
             if (input > 200 || input < 0) return message.channel.send('```Volume out of range!```').then((response) => {
                 response.delete(5000);
+                return
             });
+            else {
+                message.channel.send("```Volume must be between 1 and 200!```")
+                return
+            }
 
             message.channel.send("```Volume set to " + input + '```');
             dispatcher.setVolume((input / 100));

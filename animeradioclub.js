@@ -43,7 +43,6 @@ bot.on("disconnected", function() {
 
 bot.on("message", function(message) {
     if (message.author.id != bot.user.id && (message.content[0] === config.prefix || message.content[0] === config.backup_prefix || message.content.indexOf(bot.user.toString()) == 0)) {
-        console.log("Incoming command '" + message.content + "' from user " + message.author);
         var cmdTxt = message.content.split(" ")[0].substring(1);
         var suffix = message.content.substring(cmdTxt.length + 2);
         if (message.content.indexOf(bot.user.toString()) == 0) {
@@ -132,6 +131,12 @@ bot.on("message", function(message) {
 
             message.channel.send("```Volume set to " + input + '```');
             dispatcher.setVolume((input / 100));
+        }
+
+        if (cmdTxt === "report") {
+            var input = message.content.substring(cmdTxt.length + 2);
+            console.log("Incoming report '" + message.content + "' from user " + message.author + "#" + message.author.discriminator);
+            message.reply(":thumbsup: Your report has been sent!")
         }
 
         if (cmdTxt === "join") {

@@ -24,6 +24,9 @@ Change the volume of the bot.
 * `>help`
 
 Shows a real basic usage help.
+* `>report`
+
+Send a report of an error or something.
 
 # Run it with your own custom Bot or something
 * Clone the Git or Repo or whatnot

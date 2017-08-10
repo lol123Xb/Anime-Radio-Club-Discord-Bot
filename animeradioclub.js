@@ -142,13 +142,6 @@ bot.on("message", function(message) {
             dispatcher.setVolume((input / 100));
         }
 
-        if (cmdTxt === "maxlisteners") {
-            if (message.author.id === config.owner) {
-                process.setMaxListeners(100);
-                console.log("Set max listeners to 100")
-            }
-        }
-
         if (cmdTxt === "report") {
             var input = message.content.substring(cmdTxt.length + 2);
             console.log("Incoming report '" + input + "' from user " + message.author.username + "#" + message.author.discriminator);

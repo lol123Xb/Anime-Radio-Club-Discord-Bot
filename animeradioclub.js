@@ -11,7 +11,7 @@ const oneLine = require('common-tags').oneLine;
 let listeners = 0;
 
 const ytdl = require('ytdl-core')
-let stream = ytdl("https://www.youtube.com/watch?v=ItZWRLmnlrk")
+const stream = ytdl("https://www.youtube.com/watch?v=ItZWRLmnlrk")
 
 const fs = require('fs')
 const request = require("request");
@@ -115,6 +115,7 @@ bot.on("message", function(message) {
         if (cmdTxt === "reboot") {
             if (message.author.id === config.owner) {
                 message.channel.send(":wave: Rebooting!")
+                console.log("Rebooting")
                 setTimeout(function() {
                     process.exit(1);
                 }, 3 * 1000)
@@ -155,13 +156,11 @@ bot.on("message", function(message) {
                 return
             }
             else {
-                bot.user.setStatus("online")
-                message.channel.send("Voice channel successfully joined!")
-                message.member.voiceChannel.join().then(connection => {
-                    message.member.voiceChannel.join().then(connection => {
-                        connection.playStream(stream);
+                voiceChannel.join()
+                    .then(connection => {
+                        connection.playArbitraryInput(stream);
+                        message.channel.send("Voice channel successfully joined!")
                     })
-                })
             }
         }
 
@@ -170,15 +169,10 @@ bot.on("message", function(message) {
             const voiceChannel = message.member.voiceChannel;
             if (voiceChannel) {
                 message.channel.send("Voice channel successfully left!")
-                bot.user.setStatus("idle");
                 message.member.voiceChannel.leave();
                 return
             }
-            if (!voiceChannel) {
-                if (message.member.hasPermission("MANAGE_GUILD") == false) {
-                    message.reply(`Sorry you must have the "Manage Server" permission in order to use.`)
-                    return
-                }
+            else {
                 message.reply(`I am not currently in a voice channel. If it displays that I am then use \`>join\` to allow for \`>leave\` to work.`)
             }
         }

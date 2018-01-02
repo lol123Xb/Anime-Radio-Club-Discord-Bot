@@ -10,9 +10,6 @@ const oneLine = require('common-tags').oneLine;
 
 let listeners = 0;
 
-const ytdl = require('ytdl-core')
-const stream = ytdl("https://www.youtube.com/watch?v=ItZWRLmnlrk")
-
 const fs = require('fs')
 const request = require("request");
 
@@ -62,7 +59,7 @@ bot.on("message", function(message) {
                 .setAuthor('Felix', 'http://orig13.deviantart.net/f7a2/f/2016/343/a/b/isana_yashiro_minimal_icon_by_lol123xb-dar48hx.jpg')
                 .setColor(3447003)
                 .addField(`**Usage:**`, `After adding me to your server, join a voice channel and type \`${config.prefix}join\` to bind me to that voice channel. \nKeep in mind that you need to have the \`Manage Server\` permission to use this command.`)
-                .addField(`**Commands:**`, `\n**\\${config.prefix}join**: Joins the voice channel you are currently in. \n**\\${config.prefix}leave**: Leaves the voice channel the bot is currently in. \n**\\${config.prefix}np**: Displays the currently playing song. \n**\\${config.prefix}pfix**: Changes the global prefix.\n**\\${config.prefix}volume**: Change the volume of the bot.\n**\\${config.prefix}report**: Send a report of an error or something.`)
+                .addField(`**Commands:**`, `\n**\\${config.prefix}join**: Joins the voice channel you are currently in. \n**\\${config.prefix}leave**: Leaves the voice channel the bot is currently in. \n**\\${config.prefix}pfix**: Changes the global prefix.\n**\\${config.prefix}volume**: Change the volume of the bot.\n**\\${config.prefix}report**: Send a report of an error or something.`)
                 .addField(`**Github:**`, `https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot`)
                 .setThumbnail(bot.user.avatarURL)
 
@@ -86,20 +83,6 @@ bot.on("message", function(message) {
             message.channel.sendEmbed(
                 embed
             );
-        }
-
-        if (cmdTxt === "np") {
-            request('https://dl.dropbox.com/s/63g5bi02b1o6sxk/Snip.txt').pipe(fs.createWriteStream('piano.txt'))
-            message.channel.startTyping();
-            for (i = 0; i < (1); i++) {
-                setTimeout(function() {
-                    fs.readFile('piano.txt', 'utf8', function(err, fileContents) {
-                        if (err) throw err;
-                        message.channel.send(":notes: Now playing\n```" + fileContents + "```\n**By the way, the livestream starts 4 hours before the live part for Youtube livestreams. I have no idea how to fix that so the now playing doesn't 100% reflect what AnimeRadioClub is currently playing.**")
-                    });
-                }, 3 * 1000)
-            }
-            message.channel.stopTyping();
         }
 
         if (cmdTxt === "pfix") {
@@ -156,11 +139,11 @@ bot.on("message", function(message) {
                 return
             }
             else {
-                voiceChannel.join()
-                    .then(connection => {
-                        connection.playArbitraryInput(stream);
-                        message.channel.send("Voice channel successfully joined!")
-                    })
+                message.member.voiceChannel.join().then(connection => {
+					require('http').get("http://streaming.radionomy.com/BlueAnimeIvana?lang=en-US%2cen%3bq%3d0.9", (res) => {
+						connection.playStream(res);
+					})
+				})
             }
         }
 

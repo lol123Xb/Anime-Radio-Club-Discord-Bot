@@ -35,7 +35,7 @@ Request a suggestion for a radio station to be added in
 ## Dependencies
 These are the stuff you'll have to install before doing anything
 
-*FFMPEG (just google how to install ffmpeg for node js or something)
+* FFMPEG (just google how to install ffmpeg for node js or something)
 * `discord.js`, if it wasn't obvious enough
 * `request`
 * `sqlite`, for per-guild prefixes (could also use my code to learn how to do per-guild config if you wanted to :D)

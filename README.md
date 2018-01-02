@@ -16,6 +16,9 @@ Check Anime Radio Club's stats
 * `setprefix`
 Set the prefix for your guild
 
+* `invite`
+Grab the invite links for the bot
+
 * `restart`
 Restart the bot (Only for bot owner)
 

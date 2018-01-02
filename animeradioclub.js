@@ -245,6 +245,7 @@ client.on("message", message => {
 `ping`: Pong!\n\
 `stats`: Check Anime Radio Club\'s stats.\n\
 `setprefix`: Set the prefix for your guild.\n\
+`invite`: Grab the invite links for the bot.\n\
 `restart`: Restart the bot (Only for bot owner).\n\
 `play <radio number>`: Plays a radio station.\n\
 `list`: Lists the possible radio stations to be played.\n\

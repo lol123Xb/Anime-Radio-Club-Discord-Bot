@@ -1,30 +1,25 @@
-var Discord = require("discord.js");
-
+const Discord = require("discord.js");
+const client = new Discord.Client();
 var config = require("./config.json");
-
-var bot = new Discord.Client();
-
-const winston = require('winston');
-
-const oneLine = require('common-tags').oneLine;
+const request = require("request");
+const sql = require("sqlite");
+sql.open("./guilds.sqlite");
+const version = "2.0"
 
 let listeners = 0;
 
-const fs = require('fs')
-const request = require("request");
-
-bot.on("ready", function() {
-    winston.info(oneLine `
-			CLIENT: Anime Radio Club ready!
-			${bot.user.username}#${bot.user.discriminator} (ID: ${bot.user.id})
-			Currently in ${bot.guilds.size} servers.
-		`);
-    bot.user.setGame(`Type >help`, "https://www.twitch.tv/24_7_chill_piano");
+client.on('ready', () => {
+    var playing = ["Listening to Anime songs", `on ${client.guilds.size.toLocaleString()} servers`, "Type >help to get started!", `for ${listeners} people!`]
+    var interval = setInterval(function() {
+        var game = Math.floor((Math.random() * playing.length) + 0);
+        client.user.setGame(playing[game], "https://www.twitch.tv/24_7_chill_piano")
+    }, 35 * 1000);
+    console.log("Anime Radio Club, rolling out!")
 });
 
 setInterval(() => {
     try {
-        listeners = bot.voiceConnections
+        listeners = client.voiceConnections
             .map(vc => vc.channel.members.filter(me => !(me.user.bot || me.selfDeaf || me.deaf)).size)
             .reduce((sum, members) => sum + members);
     }
@@ -33,137 +28,234 @@ setInterval(() => {
     }
 }, 30000);
 
-bot.on("disconnected", function() {
-    console.log("Disconnected from Discord");
-    process.exit(1);
-});
 
-bot.on("message", function(message) {
-    if (message.author.id != bot.user.id && (message.content[0] === config.prefix || message.content[0] === config.backup_prefix || message.content.indexOf(bot.user.toString()) == 0)) {
-        var cmdTxt = message.content.split(" ")[0].substring(1);
-        var suffix = message.content.substring(cmdTxt.length + 2);
-        if (message.content.indexOf(bot.user.toString()) == 0) {
-            try {
-                cmdTxt = message.content.split(" ")[1];
-                suffix = message.content.substring(bot.user.toString().length + cmdTxt.length + 2);
-            }
-            catch (e) {
-                message.channel.send("Yes?");
-                return;
-            }
+client.on("message", message => {
+    if (message.channel.type === 'dm') return;
+    if (message.channel.type !== 'text') return;
+    sql.get(`SELECT * FROM guilds WHERE guildId ="${message.guild.id}"`).then(row => {
+        if (!row) {
+            sql.run("INSERT INTO guilds (guildId, prefix) VALUES (?, ?)", [message.guild.id, ">"]);
+        }
+    }).catch(() => {
+        console.error;
+        sql.run("CREATE TABLE IF NOT EXISTS guilds (guildId TEXT, prefix TEXT)").then(() => {
+            sql.run("INSERT INTO guilds (guildId, prefix) VALUES (?, ?)", [message.guild.id, ">"]);
+        });
+    });
+
+    if (message.author.bot) return;
+    sql.get(`SELECT * FROM guilds WHERE guildId ="${message.guild.id}"`).then(row => {
+        const prefix = row.prefix;
+        const args = message.content.split(" ");
+        let command = args[0];
+        command = command.slice(prefix.length)
+        if (!message.content.startsWith(prefix)) return;
+
+        //Miscellaneous commands
+        if (command === "ping") {
+            message.channel.send("Ping?").then(message => {
+                message.edit(`Pong! - ${Math.round(client.ping)} ms`);
+            });
         }
 
-        if (cmdTxt === "help") {
-            const embed = new Discord.RichEmbed()
-                .setTitle('ANIMERADIO.club Discord Bot')
-                .setAuthor('Felix', 'http://orig13.deviantart.net/f7a2/f/2016/343/a/b/isana_yashiro_minimal_icon_by_lol123xb-dar48hx.jpg')
-                .setColor(3447003)
-                .addField(`**Usage:**`, `After adding me to your server, join a voice channel and type \`${config.prefix}join\` to bind me to that voice channel. \nKeep in mind that you need to have the \`Manage Server\` permission to use this command.`)
-                .addField(`**Commands:**`, `\n**\\${config.prefix}join**: Joins the voice channel you are currently in. \n**\\${config.prefix}leave**: Leaves the voice channel the bot is currently in. \n**\\${config.prefix}pfix**: Changes the global prefix.\n**\\${config.prefix}volume**: Change the volume of the bot.\n**\\${config.prefix}report**: Send a report of an error or something.`)
-                .addField(`**Github:**`, `https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot`)
-                .setThumbnail(bot.user.avatarURL)
-
-            message.channel.sendEmbed(
-                embed
-            );
-        }
-
-        if (cmdTxt === "stats") {
-            const embed = new Discord.RichEmbed()
-                .setTitle('ANIMERADIO.club Discord Bot')
-                .setAuthor('Felix', 'http://orig13.deviantart.net/f7a2/f/2016/343/a/b/isana_yashiro_minimal_icon_by_lol123xb-dar48hx.jpg')
-                .setColor(3447003)
-                .addField(`:musical_note:  Listeners:`, `${listeners}`, true)
-                .addField(`:desktop:  Servers:`, `${bot.guilds.size}`, true)
-                .addField(':computer: Join Server', 'http://discord.gg/WCxHjFX', true)
-                .addField(':bust_in_silhouette: Invite Bot', 'https://goo.gl/ZjGBn7', true)
-
-                .setThumbnail(bot.user.avatarURL)
-
-            message.channel.sendEmbed(
-                embed
-            );
-        }
-
-        if (cmdTxt === "pfix") {
-            if (message.member.hasPermission("MANAGE_GUILD") == true || message.author.id == config.owner) {
-                message.reply("**Note:**\nIf you set the prefix to more than One character, the commands will stop working. Please use our backup prefix to fix this by changing your prefix without needing to restart the bot.\n**Backup prefix:** " + `\`${config.backup_prefix}\``)
-                var newpfix = message.content.substring(cmdTxt.length + 2);
-                config.prefix = newpfix;
-                winston.info(oneLine `Prefix changed to` + " " + newpfix)
-                message.reply(`Prefix changed to` + " `" + newpfix + "`");
-            }
-        }
-
-        if (cmdTxt === "reboot") {
+        if (command === "restart") {
             if (message.author.id === config.owner) {
                 message.channel.send(":wave: Rebooting!")
-                console.log("Rebooting")
                 setTimeout(function() {
                     process.exit(1);
                 }, 3 * 1000)
             }
+            else {
+                message.channel.send("I'm sorry, only the bot creator can use this command!")
+            }
         }
 
-        if (cmdTxt === "volume") {
-            var input = message.content.substring(cmdTxt.length + 2);
+        if (command === "setprefix") {
+            if (message.author.id === config.owner) {
+                const newPrefix = args[1];
+                sql.run(`UPDATE guilds SET prefix = replace(prefix, '${row.prefix}', '${newPrefix}') WHERE guildId = ${message.guild.id}`);
+                const embed = new Discord.RichEmbed()
+                    .setColor("#68ca55")
+                    .addField('Success:', `The prefix for **${message.guild.name}** is now **${newPrefix}**`)
 
-            const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == message.guild.id);
-            if (voiceConnection === null) return message.channel.send('```Not in a voice channel.```');
-
-            const dispatcher = voiceConnection.player.dispatcher;
-
-            if (input > 200 || input < 0) return message.channel.send('```Volume out of range!```').then((response) => {
-                response.delete(5000);
-                return
-            });
-            else {
-                message.channel.send("```Volume must be between 1 and 200!```")
+                message.channel.sendEmbed(embed);
                 return
             }
+            if (!message.member.hasPermission("ADMINISTRATOR")) {
+                const embed = new Discord.RichEmbed()
+                    .setColor("#ff0000")
+                    .addField('No Permissions:', "I'm sorry, but you don't have the `ADMINISTRATOR` permission to use this command.")
 
-            message.channel.send("```Volume set to " + input + '```');
-            dispatcher.setVolume((input / 100));
+                message.channel.sendEmbed(embed);
+                return
+            }
+            const newPrefix = args.slice(1).join(" ");
+            sql.run(`UPDATE guilds SET prefix = replace(prefix, '${row.prefix}', '${newPrefix}') WHERE guildId = ${message.guild.id}`);
+            const embed = new Discord.RichEmbed()
+                .setColor("#68ca55")
+                .addField('Success:', `The prefix for **${message.guild.name}** is now **${newPrefix}**`)
+
+            message.channel.sendEmbed(embed);
         }
 
-        if (cmdTxt === "report") {
-            var input = message.content.substring(cmdTxt.length + 2);
-            console.log("Incoming report '" + input + "' from user " + message.author.username + "#" + message.author.discriminator);
-            message.reply(":thumbsup: Your report has been sent!")
+        if (command === "invite") {
+            const embed = new Discord.RichEmbed()
+                .setColor(3447003)
+                .addField('Invite me to your server!', '[Click Here](https://discordapp.com/oauth2/authorize?client_id=273299834470006786&scope=bot&permissions=8)')
+                .addField('Get support!', '[Click Here](https://discord.gg/WCxHjFX)')
+                .setThumbnail(client.user.avatarURL)
+
+            message.channel.sendEmbed(embed);
         }
 
-        if (cmdTxt === "join") {
+        if (command === "stats") {
+            const game = client.user.presence.game || {};
+            const embed = new Discord.RichEmbed()
+                .setTitle('Anime Radio Club')
+                .setAuthor('Felix#1330', 'https://scontent.fper1-1.fna.fbcdn.net/v/t1.0-9/18664210_1417816568256757_8140624121121409774_n.jpg?oh=e673a8d56882b92983c7bf7a3eb408e6&oe=5AA4AAA9')
+                .setColor(3447003)
+                .addField(':baby: Users', `${client.guilds.reduce((mem, g) => mem += g.memberCount, 0)}`, true)
+                .addField(':desktop: Servers', `${client.guilds.size.toLocaleString()}`, true)
+                .addField(':thinking: RAM usage', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`, true)
+                .addField(':floppy_disk: Version', version, true)
+                .addField(':video_game: Game', `${game.name || 'None'} ${game.streaming ? `[(Streaming)](${game.url})` : ''}`, true)
+                .addField(`:musical_note:  Listeners:`, `${listeners}`, true)
+                .setThumbnail(client.user.avatarURL)
+
+            message.channel.sendEmbed(embed)
+        }
+
+        if (command === "report") {
+            if (!args[1]) {
+                const embed = new Discord.RichEmbed()
+                    .setColor("#ff0000")
+                    .addField('Empty message!', "You must input a message to report! You cannot leave it blank.")
+
+                message.channel.sendEmbed(embed)
+                return
+            }
+            const embed = new Discord.RichEmbed()
+                .setColor("#68ca55")
+                .addField('Report sent!', "We will look into it!")
+
+            message.channel.sendEmbed(embed);
+            const embed1 = new Discord.RichEmbed()
+                .setTimestamp()
+                .setColor(3447003)
+                .addField('New Feedback!', `${message.author.username}#${message.author.discriminator} has sent in a suggestion!`)
+                .addField('Suggestion:', `${args[1]}`)
+                .addField('Server:', `${message.guild.name} (${message.guild.id})`)
+                .setThumbnail(client.user.avatarURL)
+
+            client.channels.find("id", `397704312815484938`).sendEmbed(embed1)
+            return
+        }
+
+        if (command === "request") {
+            if (!args.slice(1).join(" ")) {
+                const embed = new Discord.RichEmbed()
+                    .setColor("#ff0000")
+                    .addField('Empty message!', "You must input a radio station you want to request to be added in! You cannot leave it blank.")
+
+                message.channel.sendEmbed(embed)
+                return
+            }
+            const embed = new Discord.RichEmbed()
+                .setColor("#68ca55")
+                .addField('Suggestion sent!', "That radio station will be considered.")
+
+            message.channel.sendEmbed(embed);
+            const embed1 = new Discord.RichEmbed()
+                .setTimestamp()
+                .setColor(3447003)
+                .addField('New Feedback!', `${message.author.username}#${message.author.discriminator} has sent in a suggestion!`)
+                .addField('Suggestion:', `${args.slice(1).join(" ")}`)
+                .addField('Server:', `${message.guild.name} (${message.guild.id})`)
+                .setThumbnail(client.user.avatarURL)
+
+            client.channels.find("id", `397704312815484938`).sendEmbed(embed1)
+            return
+        }
+
+        if (command === "list") {
+            const embed = new Discord.RichEmbed()
+                .setColor(3447003)
+                .addField('Radio Station List:', '`1`: BlueAnimeIvana')
+                .setFooter("Request a radio station to be added with the `request` command.")
+                .setThumbnail(client.user.avatarURL)
+
+            message.channel.sendEmbed(embed)
+        }
+
+        if (command === "play") {
             const voiceChannel = message.member.voiceChannel;
             if (!voiceChannel) {
-                message.reply(`Please be in a voice channel first!`);
+                const embed = new Discord.RichEmbed()
+                    .setColor("#ff0000")
+                    .addField('Error!', "You must be in a Voice channel to use this command!")
+
+                message.channel.sendEmbed(embed)
                 return
             }
-            else {
+            if (!args[1]) {
+                const embed = new Discord.RichEmbed()
+                    .setColor("#ff0000")
+                    .addField('Error!', "No radio was selected!")
+
+                message.channel.sendEmbed(embed)
+                return
+            }
+            if (args[1] === "1") {
+                const embed = new Discord.RichEmbed()
+                    .setColor("#68ca55")
+                    .addField('Success!', "Now playing BlueAnimeIvana in " + message.member.voiceChannel)
+
+                message.channel.sendEmbed(embed);
                 message.member.voiceChannel.join().then(connection => {
-					require('http').get("http://streaming.radionomy.com/BlueAnimeIvana?lang=en-US%2cen%3bq%3d0.9", (res) => {
-						connection.playStream(res);
-					})
-				})
+                    require('http').get("http://streaming.radionomy.com/BlueAnimeIvana?lang=en-US%2cen%3bq%3d0.9", (res) => {
+                        connection.playStream(res);
+                    })
+                })
+            }
+            else {
+                const embed = new Discord.RichEmbed()
+                    .setColor("#ff0000")
+                    .addField('Error!', "Radio does not exist!")
+
+                message.channel.sendEmbed(embed)
+                return
             }
         }
 
-
-        if (cmdTxt === "leave") {
-            const voiceChannel = message.member.voiceChannel;
-            if (voiceChannel) {
+        if (command === "leave") {
+            if (message.member.voiceChannel) {
                 message.channel.send("Voice channel successfully left!")
                 message.member.voiceChannel.leave();
                 return
             }
             else {
-                message.reply(`I am not currently in a voice channel. If it displays that I am then use \`>join\` to allow for \`>leave\` to work.`)
+                message.reply(`I am not currently in a voice channel! If you think this is a bug use \`play <radio number>\` and then \`leave\` to get me to leave.`)
             }
         }
 
-        if (message.author == bot.user) {
-            return;
+        if (command === "help") {
+            const embed = new Discord.RichEmbed()
+                .setColor(3447003)
+                .addField('Command List:', '`help`: Displays this message.\n\
+`ping`: Pong!\n\
+`stats`: Check Anime Radio Club\'s stats.\n\
+`setprefix`: Set the prefix for your guild.\n\
+`restart`: Restart the bot (Only for bot owner).\n\
+`play <radio number>`: Plays a radio station.\n\
+`list`: Lists the possible radio stations to be played.\n\
+`report`: Report a bug or something, not that you\'d know if that command was a bug.\n\
+`request`: Request a suggestion for a radio station to be added in.')
+                .setThumbnail(client.user.avatarURL)
+
+            message.channel.sendEmbed(embed)
         }
-    }
+
+    });
 });
 
-bot.login(config.token);
+client.login(config.token);

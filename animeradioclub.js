@@ -118,8 +118,8 @@ client.on("message", message => {
                 .addField(':desktop: Servers', `${client.guilds.size.toLocaleString()}`, true)
                 .addField(':thinking: RAM usage', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`, true)
                 .addField(':floppy_disk: Version', version, true)
-                .addField(':video_game: Game', `${game.name || 'None'} ${game.streaming ? `[(Streaming)](${game.url})` : ''}`, true)
                 .addField(`:musical_note:  Listeners:`, `${listeners}`, true)
+                .addField(':video_game: Game', `${game.name || 'None'} ${game.streaming ? `[(Streaming)](${game.url})` : ''}`, true)
                 .setThumbnail(client.user.avatarURL)
 
             message.channel.sendEmbed(embed)

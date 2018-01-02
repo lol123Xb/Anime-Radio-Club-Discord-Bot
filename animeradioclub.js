@@ -173,7 +173,7 @@ client.on("message", message => {
                 .addField('Server:', `${message.guild.name} (${message.guild.id})`)
                 .setThumbnail(client.user.avatarURL)
 
-            client.channels.find("id", `397704312815484938`).sendEmbed(embed1)
+            client.channels.find("id", `397705396518912020`).sendEmbed(embed1)
             return
         }
 

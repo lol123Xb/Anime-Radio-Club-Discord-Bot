@@ -126,7 +126,7 @@ client.on("message", message => {
         }
 
         if (command === "report") {
-            if (!args[1]) {
+            if (!args.slice(1).join(" ")) {
                 const embed = new Discord.RichEmbed()
                     .setColor("#ff0000")
                     .addField('Empty message!', "You must input a message to report! You cannot leave it blank.")
@@ -143,7 +143,7 @@ client.on("message", message => {
                 .setTimestamp()
                 .setColor("#000000")
                 .addField('New Report!', `${message.author.username}#${message.author.discriminator} has sent in a report!`)
-                .addField('Report:', `${args[1]}`)
+                .addField('Report:', `${args.slice(1).join(" ")}`)
                 .addField('Server:', `${message.guild.name} (${message.guild.id})`)
                 .setThumbnail(client.user.avatarURL)
 

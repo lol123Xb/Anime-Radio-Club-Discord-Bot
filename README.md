@@ -1,32 +1,11 @@
 ![ANIMERADIO.club](http://i.imgur.com/hKeinVM.jpg)
 
+# Bot is being remade!
+
 # Official ANIMERADIO.club Discord Bot
 The official Anime Radio Club Discord bot!!! Made with Discord.js
 # Usage
 After you've added the bot to your server, join a voice channel and type `>join` to bind the bot to that channel. You have to have the "Manage server" permission to use this command.
-# Command list
-This list uses `>` as the prefix for each
-* `>join`
-
-Type this while in a voice channel to have the bot join that channel and start playing there. 
-* `>leave`
-
-Type this to get the bot to leave the voice channel.
-* `>np`
-
-Shows what is currently playing. Since it uses the Youtube livestream, currently, the song is actually of 4 hours ago and not at the live position. Don't know how to fix that yet, using `ytdl-core`.
-* `>pfix [new prefix]`
-
-Type this in case your server has a bot that already uses the `=` sign as their prefix. Requires "Manage Server" permission.
-* `>volume`
-
-Change the volume of the bot.
-* `>help`
-
-Shows a real basic usage help.
-* `>report`
-
-Send a report of an error or something.
 
 # Run it with your own custom Bot or something
 * Clone the Git or Repo or whatnot

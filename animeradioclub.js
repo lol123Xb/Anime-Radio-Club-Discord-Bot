@@ -9,7 +9,7 @@ const version = "2.0"
 let listeners = 0;
 
 client.on('ready', () => {
-    var playing = ["Listening to Anime songs", `on ${client.guilds.size.toLocaleString()} servers`, "Type >help to get started!", `for ${listeners} people!`]
+    var playing = ["Listening to Anime songs", `on ${client.guilds.size.toLocaleString()} servers`, "Type >help to get started!"]
     var interval = setInterval(function() {
         var game = Math.floor((Math.random() * playing.length) + 0);
         client.user.setGame(playing[game], "https://www.twitch.tv/24_7_chill_piano")

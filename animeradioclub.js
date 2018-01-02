@@ -141,9 +141,9 @@ client.on("message", message => {
             message.channel.sendEmbed(embed);
             const embed1 = new Discord.RichEmbed()
                 .setTimestamp()
-                .setColor(3447003)
+                .setColor("#000000")
                 .addField('New Feedback!', `${message.author.username}#${message.author.discriminator} has sent in a suggestion!`)
-                .addField('Suggestion:', `${args[1]}`)
+                .addField('Report:', `${args[1]}`)
                 .addField('Server:', `${message.guild.name} (${message.guild.id})`)
                 .setThumbnail(client.user.avatarURL)
 

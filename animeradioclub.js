@@ -142,7 +142,7 @@ client.on("message", message => {
             const embed1 = new Discord.RichEmbed()
                 .setTimestamp()
                 .setColor("#000000")
-                .addField('New Feedback!', `${message.author.username}#${message.author.discriminator} has sent in a suggestion!`)
+                .addField('New Report!', `${message.author.username}#${message.author.discriminator} has sent in a report!`)
                 .addField('Report:', `${args[1]}`)
                 .addField('Server:', `${message.guild.name} (${message.guild.id})`)
                 .setThumbnail(client.user.avatarURL)

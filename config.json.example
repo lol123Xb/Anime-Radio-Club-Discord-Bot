@@ -1,6 +1,4 @@
 {
     "token": "token id",
-    "owner": "owner id",
-    "prefix": "=",
-    "backup_prefix": ">"
+    "owner": "owner id"
 }

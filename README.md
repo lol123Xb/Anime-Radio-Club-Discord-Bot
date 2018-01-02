@@ -1,9 +1,7 @@
-![ANIMERADIO.club](http://i.imgur.com/hKeinVM.jpg)
-
 # Bot is being remade!
 
-# Official ANIMERADIO.club Discord Bot
-The official Anime Radio Club Discord bot!!! Made with Discord.js
+# Official Anime Radio Club Discord Bot
+The official Anime Radio Club Discord bot made with Discord JS
 # Usage
 After you've added the bot to your server, join a voice channel and type `>join` to bind the bot to that channel. You have to have the "Manage server" permission to use this command.
 

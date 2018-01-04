@@ -4,7 +4,7 @@ var config = require("./config.json");
 const request = require("request");
 const sql = require("sqlite");
 sql.open("./guilds.sqlite");
-const version = "2.0"
+const version = "2.1"
 
 let listeners = 0;
 
@@ -238,6 +238,37 @@ client.on("message", message => {
             }
         }
 
+        if (command === "volume") {
+            const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == message.guild.id);
+            if (voiceConnection === null) {
+                const embed = new Discord.RichEmbed()
+                    .setColor("#ff0000")
+                    .addField('Error!', "Currently not in a voice channel!")
+
+                message.channel.sendEmbed(embed)
+                return
+            }
+
+            // Get the dispatcher
+            const dispatcher = voiceConnection.player.dispatcher;
+
+            if (args[1] > 200 || args[1] < 0) {
+                const embed = new Discord.RichEmbed()
+                    .setColor("#ff0000")
+                    .addField('Error!', "Volume out of range! Must be 0-200!")
+
+                message.channel.sendEmbed(embed)
+                return
+            }
+
+            const embed = new Discord.RichEmbed()
+                .setColor("#68ca55")
+                .addField('Success!', `Volume set to \`${args[1]}\``)
+
+            message.channel.sendEmbed(embed);
+            dispatcher.setVolume((args[1] / 100));
+        }
+
         if (command === "help") {
             const embed = new Discord.RichEmbed()
                 .setColor(3447003)
@@ -249,6 +280,7 @@ client.on("message", message => {
 `restart`: Restart the bot (Only for bot owner).\n\
 `play <radio number>`: Plays a radio station.\n\
 `list`: Lists the possible radio stations to be played.\n\
+`volume <0-200>`: Set\'s the volume for the bot.\n\
 `report`: Report a bug or something, not that you\'d know if that command was a bug.\n\
 `request`: Request a suggestion for a radio station to be added in.')
                 .setThumbnail(client.user.avatarURL)

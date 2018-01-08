@@ -4,7 +4,7 @@ var config = require("./config.json");
 const request = require("request");
 const sql = require("sqlite");
 sql.open("./guilds.sqlite");
-const version = "2.1"
+const version = "2.3"
 
 let listeners = 0;
 
@@ -229,12 +229,21 @@ client.on("message", message => {
 
         if (command === "leave") {
             if (message.member.voiceChannel) {
-                message.channel.send("Voice channel successfully left!")
+                const embed = new Discord.RichEmbed()
+                    .setColor("#68ca55")
+                    .addField('Success!', "Voice channel successfully left!")
+
+                message.channel.sendEmbed(embed);
                 message.member.voiceChannel.leave();
                 return
             }
             else {
-                message.reply(`I am not currently in a voice channel! If you think this is a bug use \`play <radio number>\` and then \`leave\` to get me to leave.`)
+                const embed = new Discord.RichEmbed()
+                    .setColor("#ff0000")
+                    .addField('Error!', "You are currently not in a voice channel!")
+
+                message.channel.sendEmbed(embed)
+                return
             }
         }
 

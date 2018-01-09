@@ -4,7 +4,7 @@ var config = require("./config.json");
 const request = require("request");
 const sql = require("sqlite");
 sql.open("./guilds.sqlite");
-const version = "2.3"
+const version = "2.4"
 
 let listeners = 0;
 
@@ -108,6 +108,15 @@ client.on("message", message => {
             message.channel.sendEmbed(embed);
         }
 
+        if (command === "website") {
+            const embed = new Discord.RichEmbed()
+                .setColor(3447003)
+                .addField('View our Website!', '[Click Here](http://animeradioclub.com/)')
+                .setThumbnail(client.user.avatarURL)
+
+            message.channel.sendEmbed(embed);
+        }
+
         if (command === "stats") {
             const game = client.user.presence.game || {};
             const embed = new Discord.RichEmbed()
@@ -180,7 +189,9 @@ client.on("message", message => {
         if (command === "list") {
             const embed = new Discord.RichEmbed()
                 .setColor(3447003)
-                .addField('Radio Station List:', '`1`: BlueAnimeIvana')
+                .addField('Radio Station List:', '`1`: BlueAnimeIvana\n\
+`2`: AnimeNexus\n\
+`3`: Listen.moe')
                 .setFooter("Request a radio station to be added with the `request` command.")
                 .setThumbnail(client.user.avatarURL)
 
@@ -216,14 +227,6 @@ client.on("message", message => {
                         connection.playStream(res);
                     })
                 })
-            }
-            else {
-                const embed = new Discord.RichEmbed()
-                    .setColor("#ff0000")
-                    .addField('Error!', "Radio does not exist!")
-
-                message.channel.sendEmbed(embed)
-                return
             }
         }
 
@@ -286,6 +289,7 @@ client.on("message", message => {
 `stats`: Check Anime Radio Club\'s stats.\n\
 `setprefix`: Set the prefix for your guild.\n\
 `invite`: Grab the invite links for the bot.\n\
+`website`: Grab the website link for the bot.\n\
 `restart`: Restart the bot (Only for bot owner).\n\
 `play <radio number>`: Plays a radio station.\n\
 `list`: Lists the possible radio stations to be played.\n\

@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://cdn.discordapp.com/avatars/273299834470006786/898545aede0fec5ae4c024ba3dba92b1.png?size=2048" />
+</p>
+
 # Completely reworked Anime Radio Club bot!
 Proudly made with Discord JS
 

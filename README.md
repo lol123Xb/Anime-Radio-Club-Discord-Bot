@@ -19,6 +19,9 @@ Set the prefix for your guild
 * `invite`
 Grab the invite links for the bot
 
+* `website`
+Grab the website link for the bot
+
 * `restart`
 Restart the bot (Only for bot owner)
 

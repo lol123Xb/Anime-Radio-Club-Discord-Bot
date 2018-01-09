@@ -189,9 +189,7 @@ client.on("message", message => {
         if (command === "list") {
             const embed = new Discord.RichEmbed()
                 .setColor(3447003)
-                .addField('Radio Station List:', '`1`: BlueAnimeIvana\n\
-`2`: AnimeNexus\n\
-`3`: Listen.moe')
+                .addField('Radio Station List:', '`1`: BlueAnimeIvana')
                 .setFooter("Request a radio station to be added with the `request` command.")
                 .setThumbnail(client.user.avatarURL)
 

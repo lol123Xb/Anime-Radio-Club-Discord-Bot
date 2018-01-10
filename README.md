@@ -26,6 +26,9 @@ Grab the invite links for the bot
 * `website`
 Grab the website link for the bot
 
+* `updates`
+Displays the update notes so you know what\'s new in this version of the bot
+
 * `restart`
 Restart the bot (Only for bot owner)
 

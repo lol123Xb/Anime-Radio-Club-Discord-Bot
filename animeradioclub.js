@@ -4,12 +4,12 @@ var config = require("./config.json");
 const request = require("request");
 const sql = require("sqlite");
 sql.open("./guilds.sqlite");
-const version = "2.4"
+const version = "2.5"
 
 let listeners = 0;
 
 client.on('ready', () => {
-    var playing = ["Anime songs", `on ${client.guilds.size.toLocaleString()} servers`, "Type >help to get started!"]
+    var playing = ["Anime songs", `on ${client.guilds.size.toLocaleString()} servers`, "Type >help to get started!", "http://animeradioclub.com/"]
     var interval = setInterval(function() {
         var game = Math.floor((Math.random() * playing.length) + 0);
         client.user.setGame(playing[game], "https://www.twitch.tv/24_7_chill_piano")
@@ -51,7 +51,6 @@ client.on("message", message => {
         command = command.slice(prefix.length)
         if (!message.content.startsWith(prefix)) return;
 
-        //Miscellaneous commands
         if (command === "ping") {
             message.channel.send("Ping?").then(message => {
                 message.edit(`Pong! - ${Math.round(client.ping)} ms`);
@@ -115,6 +114,18 @@ client.on("message", message => {
                 .setThumbnail(client.user.avatarURL)
 
             message.channel.sendEmbed(embed);
+        }
+
+        if (command === "updates") {
+            const embed = new Discord.RichEmbed()
+                .setColor(3447003)
+                .setAuthor('Update Notes', client.user.avatarURL)
+                .addField(`What's new in Version ${version}:`, `- Added website into now playing status.\n\
+- Updates command`)
+                .addField(`What was new in Previous Version:`, `- Finished website.\n\
+- Added website command.`)
+
+            message.channel.sendEmbed(embed)
         }
 
         if (command === "stats") {
@@ -226,6 +237,14 @@ client.on("message", message => {
                     })
                 })
             }
+            else {
+                const embed = new Discord.RichEmbed()
+                    .setColor("#ff0000")
+                    .addField('Error!', "Radio does not exist!")
+
+                message.channel.sendEmbed(embed)
+                return
+            }
         }
 
         if (command === "leave") {
@@ -288,6 +307,7 @@ client.on("message", message => {
 `setprefix`: Set the prefix for your guild.\n\
 `invite`: Grab the invite links for the bot.\n\
 `website`: Grab the website link for the bot.\n\
+`updates`: Displays the update notes so you know what\'s new in this version of the bot.\n\
 `restart`: Restart the bot (Only for bot owner).\n\
 `play <radio number>`: Plays a radio station.\n\
 `list`: Lists the possible radio stations to be played.\n\

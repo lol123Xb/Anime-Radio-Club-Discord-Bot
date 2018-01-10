@@ -123,7 +123,8 @@ client.on("message", message => {
                 .setAuthor('Update Notes', client.user.avatarURL)
                 .addField(`What's new in Version ${version}:`, `- Added website into now playing status.\n\
 - Updates command.\n\
-- Github link in website command.`)
+- Github link in website command.\n\
+- Fixed bug where bot kept saying radio station didn't exist even when it did.`)
                 .addField(`What was new in Previous Version:`, `- Finished website.\n\
 - Added website command.`)
 
@@ -238,15 +239,13 @@ client.on("message", message => {
                         connection.playStream(res);
                     })
                 })
-            }
-            else {
-                const embed = new Discord.RichEmbed()
-                    .setColor("#ff0000")
-                    .addField('Error!', "Radio does not exist!")
-
-                message.channel.sendEmbed(embed)
                 return
             }
+            const embed = new Discord.RichEmbed()
+                .setColor("#ff0000")
+                .addField('Error!', "Radio does not exist!")
+
+            message.channel.sendEmbed(embed)
         }
 
         if (command === "leave") {

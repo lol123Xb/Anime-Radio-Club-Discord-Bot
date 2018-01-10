@@ -111,6 +111,7 @@ client.on("message", message => {
             const embed = new Discord.RichEmbed()
                 .setColor(3447003)
                 .addField('View our Website!', '[Click Here](http://animeradioclub.com/)')
+                .addField('View our Source code on Github!', '[Click Here](https://github.com/lol123Xb/Anime-Radio-Club-Discord-Bot)')
                 .setThumbnail(client.user.avatarURL)
 
             message.channel.sendEmbed(embed);
@@ -121,7 +122,8 @@ client.on("message", message => {
                 .setColor(3447003)
                 .setAuthor('Update Notes', client.user.avatarURL)
                 .addField(`What's new in Version ${version}:`, `- Added website into now playing status.\n\
-- Updates command`)
+- Updates command.\n\
+- Github link in website command.`)
                 .addField(`What was new in Previous Version:`, `- Finished website.\n\
 - Added website command.`)
 
@@ -306,7 +308,7 @@ client.on("message", message => {
 `stats`: Check Anime Radio Club\'s stats.\n\
 `setprefix`: Set the prefix for your guild.\n\
 `invite`: Grab the invite links for the bot.\n\
-`website`: Grab the website link for the bot.\n\
+`website`: Grab the website and github link for the bot.\n\
 `updates`: Displays the update notes so you know what\'s new in this version of the bot.\n\
 `restart`: Restart the bot (Only for bot owner).\n\
 `play <radio number>`: Plays a radio station.\n\

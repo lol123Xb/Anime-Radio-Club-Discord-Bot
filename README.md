@@ -45,7 +45,7 @@ Set's the volume for the bot
 Report a bug or something, not that you'd know if that command was a bug
 
 * `request`
-Request a suggestion for a radio station to be added in
+Request a suggestion for a radio station to be added in (Limited to using this command 3 times a day)
 
 # Hosting Anime Radio Club as your own bot:
 ## Dependencies

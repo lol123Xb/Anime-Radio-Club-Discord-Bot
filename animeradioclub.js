@@ -4,7 +4,11 @@ var config = require("./config.json");
 const request = require("request");
 const sql = require("sqlite");
 sql.open("./guilds.sqlite");
-const version = "2.5"
+sql.open("./time.sqlite");
+var date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+var myDate = date.substr(0, 10);
+
+const version = "2.6"
 
 let listeners = 0;
 
@@ -40,6 +44,16 @@ client.on("message", message => {
         console.error;
         sql.run("CREATE TABLE IF NOT EXISTS guilds (guildId TEXT, prefix TEXT)").then(() => {
             sql.run("INSERT INTO guilds (guildId, prefix) VALUES (?, ?)", [message.guild.id, ">"]);
+        });
+    });
+    sql.get(`SELECT * FROM time WHERE userId ="${message.author.id}"`).then(row => {
+        if (!row) {
+            sql.run("INSERT INTO time (userId, date, amount) VALUES (?, ?, ?)", [message.author.id, '0000-00-00', 1]);
+        }
+    }).catch(() => {
+        console.error;
+        sql.run("CREATE TABLE IF NOT EXISTS time (userId TEXT, date TEXT, amount INTEGER)").then(() => {
+            sql.run("INSERT INTO time (userId, date, amount) VALUES (?, ?, ?)", [message.author.id, '0000-00-00', 1]);
         });
     });
 
@@ -121,12 +135,11 @@ client.on("message", message => {
             const embed = new Discord.RichEmbed()
                 .setColor(3447003)
                 .setAuthor('Update Notes', client.user.avatarURL)
-                .addField(`What's new in Version ${version}:`, `- Added website into now playing status.\n\
+                .addField(`What's new in Version ${version}:`, `- Suggestions are now limited to 3 uses per day`)
+                .addField(`What was new in Previous Version:`, `- Added website into now playing status.\n\
 - Updates command.\n\
 - Github link in website command.\n\
 - Fixed bug where bot kept saying radio station didn't exist even when it did.`)
-                .addField(`What was new in Previous Version:`, `- Finished website.\n\
-- Added website command.`)
 
             message.channel.sendEmbed(embed)
         }
@@ -175,29 +188,69 @@ client.on("message", message => {
         }
 
         if (command === "request") {
-            if (!args.slice(1).join(" ")) {
-                const embed = new Discord.RichEmbed()
-                    .setColor("#ff0000")
-                    .addField('Empty message!', "You must input a radio station you want to request to be added in! You cannot leave it blank.")
+            sql.get(`SELECT * FROM time WHERE userId ="${message.author.id}"`).then(row => {
+                if (row.amount === 4) {
+                    const embed = new Discord.RichEmbed()
+                        .setColor("#ff0000")
+                        .addField('Daily Max Reached!', "You have used up all 3 of your daily station suggestions, please wait until tomorrow to use this command again.")
+                        .setFooter(`Command was used on ${row.date}.`)
 
-                message.channel.sendEmbed(embed)
-                return
-            }
-            const embed = new Discord.RichEmbed()
-                .setColor("#68ca55")
-                .addField('Suggestion sent!', "That radio station will be considered.")
+                    message.channel.sendEmbed(embed)
+                    return
+                }
+                if (!args.slice(1).join(" ")) {
+                    const embed = new Discord.RichEmbed()
+                        .setColor("#ff0000")
+                        .addField('Empty message!', "You must input a radio station you want to request to be added in! You cannot leave it blank.")
 
-            message.channel.sendEmbed(embed);
-            const embed1 = new Discord.RichEmbed()
-                .setTimestamp()
-                .setColor(3447003)
-                .addField('New Feedback!', `${message.author.username}#${message.author.discriminator} has sent in a suggestion!`)
-                .addField('Suggestion:', `${args.slice(1).join(" ")}`)
-                .addField('Server:', `${message.guild.name} (${message.guild.id})`)
-                .setThumbnail(client.user.avatarURL)
+                    message.channel.sendEmbed(embed)
+                    return
+                }
+                if (row.amount >= 0 && row.amount <= 4 && row.date === "0000-00-00") {
+                    sql.run(`UPDATE time SET date = "${myDate}" WHERE userId = ${message.author.id}`);
+                    sql.run(`UPDATE time SET amount = ${row.amount + 1} WHERE userId = ${message.author.id}`);
+                    const embed = new Discord.RichEmbed()
+                        .setColor("#68ca55")
+                        .addField('Suggestion sent!', "That radio station will be considered.")
+                        .setFooter(`Used ${row.amount}/3 daily suggestions.`)
 
-            client.channels.find("id", `397705396518912020`).sendEmbed(embed1)
-            return
+                    message.channel.sendEmbed(embed);
+                    const embed1 = new Discord.RichEmbed()
+                        .setTimestamp()
+                        .setColor(3447003)
+                        .addField('New Feedback!', `${message.author.username}#${message.author.discriminator} has sent in a suggestion!`)
+                        .addField('Suggestion:', `${args.slice(1).join(" ")}`)
+                        .addField('Server:', `${message.guild.name} (${message.guild.id})`)
+                        .setThumbnail(client.user.avatarURL)
+
+                    client.channels.find("id", `397705396518912020`).sendEmbed(embed1)
+                    return
+                }
+                if (row.amount >= 0 && row.amount <= 4) {
+                    sql.run(`UPDATE time SET amount = ${row.amount + 1} WHERE userId = ${message.author.id}`);
+                    const embed = new Discord.RichEmbed()
+                        .setColor("#68ca55")
+                        .addField('Suggestion sent!', "That radio station will be considered.")
+                        .setFooter(`Used ${row.amount}/3 daily suggestions.`)
+
+                    message.channel.sendEmbed(embed);
+                    const embed1 = new Discord.RichEmbed()
+                        .setTimestamp()
+                        .setColor(3447003)
+                        .addField('New Feedback!', `${message.author.username}#${message.author.discriminator} has sent in a suggestion!`)
+                        .addField('Suggestion:', `${args.slice(1).join(" ")}`)
+                        .addField('Server:', `${message.guild.name} (${message.guild.id})`)
+                        .setThumbnail(client.user.avatarURL)
+
+                    client.channels.find("id", `397705396518912020`).sendEmbed(embed1)
+                    return
+                }
+                if (row.date !== myDate) {
+                    sql.run(`UPDATE time SET amount = 0 WHERE userId = ${message.author.id}`);
+                    sql.run(`UPDATE time SET date = "0000-00-00" WHERE userId = ${message.author.id}`);
+                    return
+                }
+            });
         }
 
         if (command === "list") {
@@ -314,7 +367,7 @@ client.on("message", message => {
 `list`: Lists the possible radio stations to be played.\n\
 `volume <0-200>`: Set\'s the volume for the bot.\n\
 `report`: Report a bug or something, not that you\'d know if that command was a bug.\n\
-`request`: Request a suggestion for a radio station to be added in.')
+`request`: Request a suggestion for a radio station to be added in. (Limited to using this command 3 times a day).')
                 .setThumbnail(client.user.avatarURL)
 
             message.channel.sendEmbed(embed)

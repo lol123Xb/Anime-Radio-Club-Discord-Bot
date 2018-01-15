@@ -189,11 +189,15 @@ client.on("message", message => {
 
         if (command === "request") {
             sql.get(`SELECT * FROM time WHERE userId ="${message.author.id}"`).then(row => {
+                if (row.date !== myDate) {
+                    sql.run(`UPDATE time SET amount = 0 WHERE userId = ${message.author.id}`);
+                    sql.run(`UPDATE time SET date = "0000-00-00" WHERE userId = ${message.author.id}`);
+                }
                 if (row.amount === 4) {
                     const embed = new Discord.RichEmbed()
                         .setColor("#ff0000")
                         .addField('Daily Max Reached!', "You have used up all 3 of your daily station suggestions, please wait until tomorrow to use this command again.")
-                        .setFooter(`Command was used on ${row.date}.`)
+                        .setFooter(`Command was used on ${row.date}. Today is ${myDate}`)
 
                     message.channel.sendEmbed(embed)
                     return
@@ -243,11 +247,6 @@ client.on("message", message => {
                         .setThumbnail(client.user.avatarURL)
 
                     client.channels.find("id", `397705396518912020`).sendEmbed(embed1)
-                    return
-                }
-                if (row.date !== myDate) {
-                    sql.run(`UPDATE time SET amount = 0 WHERE userId = ${message.author.id}`);
-                    sql.run(`UPDATE time SET date = "0000-00-00" WHERE userId = ${message.author.id}`);
                     return
                 }
             });

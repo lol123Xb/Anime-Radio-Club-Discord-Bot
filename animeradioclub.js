@@ -8,7 +8,7 @@ sql.open("./time.sqlite");
 var date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
 var myDate = date.substr(0, 10);
 
-const version = "2.6"
+const version = "2.7"
 
 let listeners = 0;
 
@@ -131,15 +131,21 @@ client.on("message", message => {
             message.channel.sendEmbed(embed);
         }
 
+        if (command === "donate") {
+            const embed = new Discord.RichEmbed()
+                .setColor(3447003)
+                .addField('Donate Paypal', '[Click Here](https://www.paypal.me/FelixDoan)')
+                .setThumbnail(client.user.avatarURL)
+
+            message.channel.sendEmbed(embed);
+        }
+
         if (command === "updates") {
             const embed = new Discord.RichEmbed()
                 .setColor(3447003)
                 .setAuthor('Update Notes', client.user.avatarURL)
-                .addField(`What's new in Version ${version}:`, `- Suggestions are now limited to 3 uses per day`)
-                .addField(`What was new in Previous Version:`, `- Added website into now playing status.\n\
-- Updates command.\n\
-- Github link in website command.\n\
-- Fixed bug where bot kept saying radio station didn't exist even when it did.`)
+                .addField(`What's new in Version ${version}:`, `- Donate command`)
+                .addField(`What was new in Previous Version:`, `- Suggestions are now limited to 3 uses per day`)
 
             message.channel.sendEmbed(embed)
         }
@@ -355,6 +361,7 @@ client.on("message", message => {
             const embed = new Discord.RichEmbed()
                 .setColor(3447003)
                 .addField('Command List:', '`help`: Displays this message.\n\
+`donate`: Grab the donate link.\n\
 `ping`: Pong!\n\
 `stats`: Check Anime Radio Club\'s stats.\n\
 `setprefix`: Set the prefix for your guild.\n\

@@ -8,7 +8,7 @@ sql.open("./time.sqlite");
 var date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
 var myDate = date.substr(0, 10);
 
-const version = "2.7"
+const version = "3.0"
 
 let listeners = 0;
 
@@ -64,6 +64,7 @@ client.on("message", message => {
         let command = args[0];
         command = command.slice(prefix.length)
         if (!message.content.startsWith(prefix)) return;
+        var reason1 = args.slice(1).join(" ");
 
         if (command === "ping") {
             message.channel.send("Ping?").then(message => {
@@ -144,8 +145,8 @@ client.on("message", message => {
             const embed = new Discord.RichEmbed()
                 .setColor(3447003)
                 .setAuthor('Update Notes', client.user.avatarURL)
-                .addField(`What's new in Version ${version}:`, `- Donate command`)
-                .addField(`What was new in Previous Version:`, `- Suggestions are now limited to 3 uses per day`)
+                .addField(`What's new in Version ${version}:`, `- Suggestion command`)
+                .addField(`What was new in Previous Version:`, `- New radio station player.RockFM.fm`)
 
             message.channel.sendEmbed(embed)
         }
@@ -190,6 +191,32 @@ client.on("message", message => {
                 .setThumbnail(client.user.avatarURL)
 
             client.channels.find("id", `397704312815484938`).sendEmbed(embed1)
+            return
+        }
+
+        if (command === "suggest") {
+            if (!reason1) {
+                const embed = new Discord.RichEmbed()
+                    .setColor("#ff0000")
+                    .addField('Empty message!', "You must input a suggestion! You cannot leave it blank.")
+
+                message.channel.sendEmbed(embed)
+                return
+            }
+            const embed = new Discord.RichEmbed()
+                .setColor("#68ca55")
+                .addField('Suggestion sent!', "Thank you for your feedback.")
+
+            message.channel.sendEmbed(embed);
+            const embed1 = new Discord.RichEmbed()
+                .setTimestamp()
+                .setColor(3447003)
+                .addField('New Feedback!', `${message.author.username}#${message.author.discriminator} has sent in a suggestion!`)
+                .addField('Suggestion:', `${reason1}`)
+                .addField('Server:', `${message.guild.name} (${message.guild.id})`)
+                .setThumbnail(client.user.avatarURL)
+
+            client.channels.find("id", `408276356497932309`).sendEmbed(embed1)
             return
         }
 
@@ -299,11 +326,6 @@ client.on("message", message => {
                 })
                 return
             }
-            const embed = new Discord.RichEmbed()
-                .setColor("#ff0000")
-                .addField('Error!', "Radio does not exist!")
-
-            message.channel.sendEmbed(embed)
         }
 
         if (command === "leave") {
@@ -373,7 +395,8 @@ client.on("message", message => {
 `list`: Lists the possible radio stations to be played.\n\
 `volume <0-200>`: Set\'s the volume for the bot.\n\
 `report`: Report a bug or something, not that you\'d know if that command was a bug.\n\
-`request`: Request a suggestion for a radio station to be added in. (Limited to using this command 3 times a day).')
+`request`: Request a suggestion for a radio station to be added in. (Limited to using this command 3 times a day).\n\
+`suggest`: Suggest a feature or command you\'d like to see on the bot.')
                 .setThumbnail(client.user.avatarURL)
 
             message.channel.sendEmbed(embed)

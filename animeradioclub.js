@@ -8,7 +8,7 @@ sql.open("./time.sqlite");
 var date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
 var myDate = date.substr(0, 10);
 
-const version = "3.0"
+const version = "3.1"
 
 let listeners = 0;
 
@@ -145,8 +145,8 @@ client.on("message", message => {
             const embed = new Discord.RichEmbed()
                 .setColor(3447003)
                 .setAuthor('Update Notes', client.user.avatarURL)
-                .addField(`What's new in Version ${version}:`, `- Suggestion command`)
-                .addField(`What was new in Previous Version:`, `- New radio station player.RockFM.fm`)
+                .addField(`What's new in Version ${version}:`, `- Added in leave command to help (forgot about doing so for ages)`)
+                .addField(`What was new in Previous Version:`, `- Suggestion command`)
 
             message.channel.sendEmbed(embed)
         }
@@ -326,6 +326,11 @@ client.on("message", message => {
                 })
                 return
             }
+            const embed = new Discord.RichEmbed()
+                .setColor("#ff0000")
+                .addField('Error!', "Radio does not exist!")
+
+            message.channel.sendEmbed(embed)
         }
 
         if (command === "leave") {
@@ -392,6 +397,7 @@ client.on("message", message => {
 `updates`: Displays the update notes so you know what\'s new in this version of the bot.\n\
 `restart`: Restart the bot (Only for bot owner).\n\
 `play <radio number>`: Plays a radio station.\n\
+`leave`: Make the bot leave the channel.\n\
 `list`: Lists the possible radio stations to be played.\n\
 `volume <0-200>`: Set\'s the volume for the bot.\n\
 `report`: Report a bug or something, not that you\'d know if that command was a bug.\n\

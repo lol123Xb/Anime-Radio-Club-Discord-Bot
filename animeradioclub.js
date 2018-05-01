@@ -8,7 +8,7 @@ sql.open("./time.sqlite");
 var date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
 var myDate = date.substr(0, 10);
 
-const version = "3.1"
+const version = "3.4"
 
 let listeners = 0;
 
@@ -137,6 +137,7 @@ client.on("message", message => {
                 .setColor(3447003)
                 .addField('Donate Paypal', '[Click Here](https://www.paypal.me/FelixDoan)')
                 .setThumbnail(client.user.avatarURL)
+                .setFooter("After donating, contact me directly, Felix#1330, to get yourself on the list of donators")
 
             message.channel.sendEmbed(embed);
         }
@@ -145,8 +146,20 @@ client.on("message", message => {
             const embed = new Discord.RichEmbed()
                 .setColor(3447003)
                 .setAuthor('Update Notes', client.user.avatarURL)
-                .addField(`What's new in Version ${version}:`, `- Added in leave command to help (forgot about doing so for ages)`)
-                .addField(`What was new in Previous Version:`, `- Suggestion command`)
+                .addField(`What's new in Version ${version}:`, `- Added in Rays Ravers radio station\n\
+- Added in command to play from URL\n\
+- Added categories into the help command`)
+                .addField(`What was new in Previous Version:`, `- Added in donator list command`)
+
+            message.channel.sendEmbed(embed)
+        }
+
+        if (command === "donators") {
+            const embed = new Discord.RichEmbed()
+                .setColor(3447003)
+                .setAuthor('Donators', client.user.avatarURL)
+                .setDescription("No one yet :(")
+                .setFooter("Awesome list of people")
 
             message.channel.sendEmbed(embed)
         }
@@ -333,6 +346,45 @@ client.on("message", message => {
             message.channel.sendEmbed(embed)
         }
 
+        if (command === "link") {
+            const voiceChannel = message.member.voiceChannel;
+            if (!voiceChannel) {
+                const embed = new Discord.RichEmbed()
+                    .setColor("#ff0000")
+                    .addField('Error!', "You must be in a Voice channel to use this command!")
+
+                message.channel.sendEmbed(embed)
+                return
+            }
+            if (!args[1]) {
+                const embed = new Discord.RichEmbed()
+                    .setColor("#ff0000")
+                    .addField('Error!', "No URL inputted!")
+
+                message.channel.sendEmbed(embed)
+                return
+            }
+            if (message.content.match(/http/i)) {
+                const embed = new Discord.RichEmbed()
+                    .setColor("#68ca55")
+                    .addField('Success!', "Now playing your inputted radio station in " + message.member.voiceChannel + "\nIf you can't hear anything after a while it could be because the link was invalid")
+
+                message.channel.sendEmbed(embed);
+                message.member.voiceChannel.join().then(connection => {
+                    require('http').get(args[1], (res) => {
+                        connection.playStream(res);
+                    })
+                })
+                return
+            }
+            const embed = new Discord.RichEmbed()
+                .setColor("#ff0000")
+                .addField('Error!', "Inputted URL did not contain http at the start!")
+
+            message.channel.sendEmbed(embed)
+            return
+        }
+
         if (command === "leave") {
             if (message.member.voiceChannel) {
                 const embed = new Discord.RichEmbed()
@@ -385,24 +437,66 @@ client.on("message", message => {
         }
 
         if (command === "help") {
-            const embed = new Discord.RichEmbed()
-                .setColor(3447003)
-                .addField('Command List:', '`help`: Displays this message.\n\
+            if (args[1] === null || args[1] === "") {
+                const embed = new Discord.RichEmbed()
+                    .setColor(3447003)
+                    .addField('Help Categories:', '`1.` Music Commands\n\
+`2.` Miscellaneous\n\
+`3.` Support Commands\n\
+Do `help <number>` to select a category')
+                    .setThumbnail(client.user.avatarURL)
+
+                message.channel.sendEmbed(embed)
+                return
+            }
+            if (args[1] === "1") {
+                const page1 = new Discord.RichEmbed()
+                    .setColor(3447003)
+                    .setTitle("Music Commands")
+                    .setDescription('`play <radio number>`: Plays a radio station.\n\
+`link <radio url>`: Plays the radio station through its url, link must be http and something like "<http://88.198.69.145:8722/stream>"\n\
+`leave`: Make the bot leave the channel.\n\
+`list`: Lists the possible radio stations to be played.\n\
+`volume <0-200>`: Set\'s the volume for the bot.\n')
+
+                message.channel.sendEmbed(page1)
+                return
+            }
+            if (args[1] === "2") {
+                const page2 = new Discord.RichEmbed()
+                    .setColor(3447003)
+                    .setTitle("Miscellaneous")
+                    .setDescription('`help`: Displays all help categories.\n\
 `donate`: Grab the donate link.\n\
+`donators`: Sends a list of people who helped support Anime Radio Club through donations.\n\
 `ping`: Pong!\n\
 `stats`: Check Anime Radio Club\'s stats.\n\
 `setprefix`: Set the prefix for your guild.\n\
-`invite`: Grab the invite links for the bot.\n\
+`restart`: Restart the bot (Only for bot owner).\n')
+
+                message.channel.sendEmbed(page2)
+                return
+            }
+            if (args[1] === "3") {
+                const page3 = new Discord.RichEmbed()
+                    .setColor(3447003)
+                    .setTitle("Support Commands")
+                    .setDescription('`invite`: Grab the invite links for the bot.\n\
 `website`: Grab the website and github link for the bot.\n\
 `updates`: Displays the update notes so you know what\'s new in this version of the bot.\n\
-`restart`: Restart the bot (Only for bot owner).\n\
-`play <radio number>`: Plays a radio station.\n\
-`leave`: Make the bot leave the channel.\n\
-`list`: Lists the possible radio stations to be played.\n\
-`volume <0-200>`: Set\'s the volume for the bot.\n\
 `report`: Report a bug or something, not that you\'d know if that command was a bug.\n\
 `request`: Request a suggestion for a radio station to be added in. (Limited to using this command 3 times a day).\n\
 `suggest`: Suggest a feature or command you\'d like to see on the bot.')
+
+                message.channel.sendEmbed(page3)
+                return
+            }
+            const embed = new Discord.RichEmbed()
+                .setColor(3447003)
+                .addField('Help Categories:', '`1.` Music Commands\n\
+`2.` Miscellaneous\n\
+`3.` Support Commands\n\
+Do `help <number>` to select a category')
                 .setThumbnail(client.user.avatarURL)
 
             message.channel.sendEmbed(embed)

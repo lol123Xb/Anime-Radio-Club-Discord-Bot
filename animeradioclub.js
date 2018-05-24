@@ -332,6 +332,8 @@ client.on("message", message => {
                     .addField('Success!', "Now playing BlueAnimeIvana in " + message.member.voiceChannel)
 
                 message.channel.sendEmbed(embed);
+                const member1 = message.guild.member(client.user);
+                if (member1 && !member1.deaf) member1.setDeaf(true);
                 message.member.voiceChannel.join().then(connection => {
                     require('http').get("http://streaming.radionomy.com/BlueAnimeIvana?lang=en-US%2cen%3bq%3d0.9", (res) => {
                         connection.playStream(res);
@@ -370,6 +372,8 @@ client.on("message", message => {
                     .addField('Success!', "Now playing your inputted radio station in " + message.member.voiceChannel + "\nIf you can't hear anything after a while it could be because the link was invalid")
 
                 message.channel.sendEmbed(embed);
+                const member1 = message.guild.member(client.user);
+                if (member1 && !member1.deaf) member1.setDeaf(true);
                 message.member.voiceChannel.join().then(connection => {
                     require('http').get(args[1], (res) => {
                         connection.playStream(res);

@@ -8,7 +8,7 @@ sql.open("./time.sqlite");
 var date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
 var myDate = date.substr(0, 10);
 
-const version = "3.4"
+const version = "3.5"
 
 let listeners = 0;
 
@@ -85,6 +85,14 @@ client.on("message", message => {
         }
 
         if (command === "setprefix") {
+            if (!args[1]) {
+                const embed = new Discord.RichEmbed()
+                    .setColor("#ff0000")
+                    .addField('Error:', "Please input something to be the new prefix!")
+
+                message.channel.sendEmbed(embed);
+                return
+            }
             if (message.author.id === config.owner) {
                 const newPrefix = args[1];
                 sql.run(`UPDATE guilds SET prefix = replace(prefix, '${row.prefix}', '${newPrefix}') WHERE guildId = ${message.guild.id}`);
@@ -146,10 +154,10 @@ client.on("message", message => {
             const embed = new Discord.RichEmbed()
                 .setColor(3447003)
                 .setAuthor('Update Notes', client.user.avatarURL)
-                .addField(`What's new in Version ${version}:`, `- Added in Rays Ravers radio station\n\
+                .addField(`What's new in Version ${version}:`, `- Fixed set prefix command`)
+                .addField(`What was new in Previous Version:`, `- Added in Rays Ravers radio station\n\
 - Added in command to play from URL\n\
 - Added categories into the help command`)
-                .addField(`What was new in Previous Version:`, `- Added in donator list command`)
 
             message.channel.sendEmbed(embed)
         }

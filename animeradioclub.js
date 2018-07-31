@@ -8,7 +8,7 @@ sql.open("./time.sqlite");
 var date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
 var myDate = date.substr(0, 10);
 
-const version = "3.5"
+const version = "3.6"
 
 let listeners = 0;
 
@@ -66,6 +66,16 @@ client.on("message", message => {
         if (!message.content.startsWith(prefix)) return;
         var reason1 = args.slice(1).join(" ");
 
+        const modrole = [`AnimeDJ`];
+        var isDJ
+        var roles = message.guild.member(message.author.id).roles.array()
+        for (var i = 0; i < roles.length; i++) {
+            if (modrole.includes(roles[i].name)) {
+                isDJ = true
+                break
+            }
+        }
+
         if (command === "ping") {
             message.channel.send("Ping?").then(message => {
                 message.edit(`Pong! - ${Math.round(client.ping)} ms`);
@@ -103,7 +113,7 @@ client.on("message", message => {
                 message.channel.sendEmbed(embed);
                 return
             }
-            if (!message.member.hasPermission("ADMINISTRATOR")) {
+            if (!message.member.hasPermission("ADMINISTRATOR") || !isDJ) {
                 const embed = new Discord.RichEmbed()
                     .setColor("#ff0000")
                     .addField('No Permissions:', "I'm sorry, but you don't have the `ADMINISTRATOR` permission to use this command.")
@@ -154,10 +164,9 @@ client.on("message", message => {
             const embed = new Discord.RichEmbed()
                 .setColor(3447003)
                 .setAuthor('Update Notes', client.user.avatarURL)
-                .addField(`What's new in Version ${version}:`, `- Fixed set prefix command`)
-                .addField(`What was new in Previous Version:`, `- Added in Rays Ravers radio station\n\
-- Added in command to play from URL\n\
-- Added categories into the help command`)
+                .addField(`What's new in Version ${version}:`, `- Play, leave and link commands now require the \`AnimeDJ\` role in order to use
+- Removed a few radio stations as they have died out and/or stopped working`)
+                .addField(`What was new in Previous Version:`, `- Fixed set prefix command`)
 
             message.channel.sendEmbed(embed)
         }
@@ -309,7 +318,7 @@ client.on("message", message => {
         if (command === "list") {
             const embed = new Discord.RichEmbed()
                 .setColor(3447003)
-                .addField('Radio Station List:', '`1`: BlueAnimeIvana')
+                .addField('Radio Station List:', '`1`: AnimeNexus')
                 .setFooter("Request a radio station to be added with the `request` command.")
                 .setThumbnail(client.user.avatarURL)
 
@@ -317,135 +326,175 @@ client.on("message", message => {
         }
 
         if (command === "play") {
-            const voiceChannel = message.member.voiceChannel;
-            if (!voiceChannel) {
-                const embed = new Discord.RichEmbed()
-                    .setColor("#ff0000")
-                    .addField('Error!', "You must be in a Voice channel to use this command!")
+            if (isDJ) {
+                const voiceChannel = message.member.voiceChannel;
+                if (!voiceChannel) {
+                    const embed = new Discord.RichEmbed()
+                        .setColor("#ff0000")
+                        .addField('Error!', "You must be in a Voice channel to use this command!")
 
-                message.channel.sendEmbed(embed)
-                return
-            }
-            if (!args[1]) {
-                const embed = new Discord.RichEmbed()
-                    .setColor("#ff0000")
-                    .addField('Error!', "No radio was selected!")
+                    message.channel.sendEmbed(embed)
+                    return
+                }
+                if (!args[1]) {
+                    const embed = new Discord.RichEmbed()
+                        .setColor("#ff0000")
+                        .addField('Error!', "No radio was selected!")
 
-                message.channel.sendEmbed(embed)
-                return
-            }
-            if (args[1] === "1") {
-                const embed = new Discord.RichEmbed()
-                    .setColor("#68ca55")
-                    .addField('Success!', "Now playing BlueAnimeIvana in " + message.member.voiceChannel)
+                    message.channel.sendEmbed(embed)
+                    return
+                }
+                if (args[1] === "1") {
+                    const embed = new Discord.RichEmbed()
+                        .setColor("#68ca55")
+                        .addField('Success!', "Now playing AnimeNexus in " + message.member.voiceChannel)
 
-                message.channel.sendEmbed(embed);
-                const member1 = message.guild.member(client.user);
-                if (member1 && !member1.deaf) member1.setDeaf(true);
-                message.member.voiceChannel.join().then(connection => {
-                    require('http').get("http://streaming.radionomy.com/BlueAnimeIvana?lang=en-US%2cen%3bq%3d0.9", (res) => {
-                        connection.playStream(res);
+                    message.channel.sendEmbed(embed);
+                    const member1 = message.guild.member(client.user);
+                    if (member1 && !member1.deaf) member1.setDeaf(true);
+                    message.member.voiceChannel.join().then(connection => {
+                        require('http').get("http://radio.animenexus.mx:8000/animenexus", (res) => {
+                            connection.playStream(res);
+                        })
                     })
-                })
+                    return
+                }
+                const embed = new Discord.RichEmbed()
+                    .setColor("#ff0000")
+                    .addField('Error!', "Radio does not exist!")
+
+                message.channel.sendEmbed(embed)
+            }
+            if (!isDJ) {
+                const embed = new Discord.RichEmbed()
+                    .setColor("#ff0000")
+                    .addField('Error!', "You must have the `AnimeDJ` role to use this command!")
+
+                message.channel.sendEmbed(embed)
                 return
             }
-            const embed = new Discord.RichEmbed()
-                .setColor("#ff0000")
-                .addField('Error!', "Radio does not exist!")
-
-            message.channel.sendEmbed(embed)
         }
 
         if (command === "link") {
-            const voiceChannel = message.member.voiceChannel;
-            if (!voiceChannel) {
+            if (!isDJ) {
                 const embed = new Discord.RichEmbed()
                     .setColor("#ff0000")
-                    .addField('Error!', "You must be in a Voice channel to use this command!")
+                    .addField('Error!', "You must have the `AnimeDJ` role to use this command!")
 
                 message.channel.sendEmbed(embed)
                 return
             }
-            if (!args[1]) {
-                const embed = new Discord.RichEmbed()
-                    .setColor("#ff0000")
-                    .addField('Error!', "No URL inputted!")
+            if (isDJ) {
+                const voiceChannel = message.member.voiceChannel;
+                if (!voiceChannel) {
+                    const embed = new Discord.RichEmbed()
+                        .setColor("#ff0000")
+                        .addField('Error!', "You must be in a Voice channel to use this command!")
 
-                message.channel.sendEmbed(embed)
-                return
-            }
-            if (message.content.match(/http/i)) {
-                const embed = new Discord.RichEmbed()
-                    .setColor("#68ca55")
-                    .addField('Success!', "Now playing your inputted radio station in " + message.member.voiceChannel + "\nIf you can't hear anything after a while it could be because the link was invalid")
+                    message.channel.sendEmbed(embed)
+                    return
+                }
+                if (!args[1]) {
+                    const embed = new Discord.RichEmbed()
+                        .setColor("#ff0000")
+                        .addField('Error!', "No URL inputted!")
 
-                message.channel.sendEmbed(embed);
-                const member1 = message.guild.member(client.user);
-                if (member1 && !member1.deaf) member1.setDeaf(true);
-                message.member.voiceChannel.join().then(connection => {
-                    require('http').get(args[1], (res) => {
-                        connection.playStream(res);
+                    message.channel.sendEmbed(embed)
+                    return
+                }
+                if (message.content.match(/http/i)) {
+                    const embed = new Discord.RichEmbed()
+                        .setColor("#68ca55")
+                        .addField('Success!', "Now playing your inputted radio station in " + message.member.voiceChannel + "\nIf you can't hear anything after a while it could be because the link was invalid")
+
+                    message.channel.sendEmbed(embed);
+                    const member1 = message.guild.member(client.user);
+                    if (member1 && !member1.deaf) member1.setDeaf(true);
+                    message.member.voiceChannel.join().then(connection => {
+                        require('http').get(args[1], (res) => {
+                            connection.playStream(res);
+                        })
                     })
-                })
+                    return
+                }
+                const embed = new Discord.RichEmbed()
+                    .setColor("#ff0000")
+                    .addField('Error!', "Inputted URL did not contain http at the start!")
+
+                message.channel.sendEmbed(embed)
                 return
             }
-            const embed = new Discord.RichEmbed()
-                .setColor("#ff0000")
-                .addField('Error!', "Inputted URL did not contain http at the start!")
-
-            message.channel.sendEmbed(embed)
-            return
         }
 
         if (command === "leave") {
-            if (message.member.voiceChannel) {
-                const embed = new Discord.RichEmbed()
-                    .setColor("#68ca55")
-                    .addField('Success!', "Voice channel successfully left!")
-
-                message.channel.sendEmbed(embed);
-                message.member.voiceChannel.leave();
-                return
-            }
-            else {
+            if (!isDJ) {
                 const embed = new Discord.RichEmbed()
                     .setColor("#ff0000")
-                    .addField('Error!', "You are currently not in a voice channel!")
+                    .addField('Error!', "You must have the `AnimeDJ` role to use this command!")
 
                 message.channel.sendEmbed(embed)
                 return
+            }
+            if (isDJ) {
+                if (message.member.voiceChannel) {
+                    const embed = new Discord.RichEmbed()
+                        .setColor("#68ca55")
+                        .addField('Success!', "Voice channel successfully left!")
+
+                    message.channel.sendEmbed(embed);
+                    message.member.voiceChannel.leave();
+                    return
+                }
+                else {
+                    const embed = new Discord.RichEmbed()
+                        .setColor("#ff0000")
+                        .addField('Error!', "You are currently not in a voice channel!")
+
+                    message.channel.sendEmbed(embed)
+                    return
+                }
             }
         }
 
         if (command === "volume") {
-            const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == message.guild.id);
-            if (voiceConnection === null) {
+            if (!isDJ) {
                 const embed = new Discord.RichEmbed()
                     .setColor("#ff0000")
-                    .addField('Error!', "Currently not in a voice channel!")
+                    .addField('Error!', "You must have the `AnimeDJ` role to use this command!")
 
                 message.channel.sendEmbed(embed)
                 return
             }
+            if (isDJ) {
+                const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == message.guild.id);
+                if (voiceConnection === null) {
+                    const embed = new Discord.RichEmbed()
+                        .setColor("#ff0000")
+                        .addField('Error!', "Currently not in a voice channel!")
 
-            // Get the dispatcher
-            const dispatcher = voiceConnection.player.dispatcher;
+                    message.channel.sendEmbed(embed)
+                    return
+                }
 
-            if (args[1] > 200 || args[1] < 0) {
+                // Get the dispatcher
+                const dispatcher = voiceConnection.player.dispatcher;
+
+                if (args[1] > 200 || args[1] < 0) {
+                    const embed = new Discord.RichEmbed()
+                        .setColor("#ff0000")
+                        .addField('Error!', "Volume out of range! Must be 0-200!")
+
+                    message.channel.sendEmbed(embed)
+                    return
+                }
+
                 const embed = new Discord.RichEmbed()
-                    .setColor("#ff0000")
-                    .addField('Error!', "Volume out of range! Must be 0-200!")
+                    .setColor("#68ca55")
+                    .addField('Success!', `Volume set to \`${args[1]}\``)
 
-                message.channel.sendEmbed(embed)
-                return
+                message.channel.sendEmbed(embed);
+                dispatcher.setVolume((args[1] / 100));
             }
-
-            const embed = new Discord.RichEmbed()
-                .setColor("#68ca55")
-                .addField('Success!', `Volume set to \`${args[1]}\``)
-
-            message.channel.sendEmbed(embed);
-            dispatcher.setVolume((args[1] / 100));
         }
 
         if (command === "help") {
@@ -470,6 +519,7 @@ Do `help <number>` to select a category')
 `leave`: Make the bot leave the channel.\n\
 `list`: Lists the possible radio stations to be played.\n\
 `volume <0-200>`: Set\'s the volume for the bot.\n')
+                    .setFooter("You must have the `AnimeDJ` role to use these commands")
 
                 message.channel.sendEmbed(page1)
                 return

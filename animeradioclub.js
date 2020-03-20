@@ -48,7 +48,7 @@ client.on("message", message => {
 
   if (message.author.bot) return;
   sql.get(`SELECT * FROM guilds WHERE guildId ="${message.guild.id}"`).then(row => {
-    const prefix = row.prefix;
+    const prefix = ">";
     const args = message.content.split(" ");
     let command = args[0];
     command = command.slice(prefix.length)
@@ -104,7 +104,7 @@ client.on("message", message => {
       const embed = new Discord.MessageEmbed()
         .setColor(3447003)
         .setAuthor('Donators', client.user.avatarURL)
-        .setDescription("No one yet :(")
+        .setDescription("Buttons#3961 - $5")
         .setFooter("Awesome list of people")
 
       message.channel.send(embed)
@@ -253,9 +253,9 @@ client.on("message", message => {
         .addField('New Report!', `${message.author.username}#${message.author.discriminator} has sent in a report!`)
         .addField('Report:', `${args.slice(1).join(" ")}`)
         .addField('Server:', `${message.guild.name} (${message.guild.id})`)
-        .setThumbnail(message.author.avatarURL)
+        .setThumbnail(message.author.avatarURL())
 
-      client.channels.find("id", `397704312815484938`).send(embed1)
+      client.channels.cache.get(`690526398045093939`).send(embed1)
       return
     }
 
@@ -279,9 +279,9 @@ client.on("message", message => {
         .addField('New Feedback!', `${message.author.username}#${message.author.discriminator} has sent in a suggestion!`)
         .addField('Suggestion:', `${reason1}`)
         .addField('Server:', `${message.guild.name} (${message.guild.id})`)
-        .setThumbnail(message.author.avatarURL)
+        .setThumbnail(message.author.avatarURL())
 
-      client.channels.find("id", `408276356497932309`).send(embed1)
+      client.channels.cache.get(`408276356497932309`).send(embed1)
       return
     }
 
@@ -305,9 +305,9 @@ client.on("message", message => {
         .addField('New Feedback!', `${message.author.username}#${message.author.discriminator} has sent in a suggestion!`)
         .addField('Suggestion:', `${args.slice(1).join(" ")}`)
         .addField('Server:', `${message.guild.name} (${message.guild.id})`)
-        .setThumbnail(message.author.avatarURL)
+        .setThumbnail(message.author.avatarURL())
 
-      client.channels.find("id", `397705396518912020`).send(embed1)
+      client.channels.cache.get(`397705396518912020`).send(embed1)
       return
     }
 

@@ -48,7 +48,7 @@ client.on("message", message => {
 
   if (message.author.bot) return;
   sql.get(`SELECT * FROM guilds WHERE guildId ="${message.guild.id}"`).then(row => {
-    const prefix = ">";
+    const prefix = row.prefix;
     const args = message.content.split(" ");
     let command = args[0];
     command = command.slice(prefix.length)

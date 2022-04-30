@@ -51,7 +51,7 @@ These are the stuff you'll have to install before doing anything
 * `npm install --save @discordjs/opus` to install voice for the bot
 
 # Links:
-[Invite](https://discord.com/api/oauth2/authorize?client_id=868709887310434415&permissions=8&scope=bot8) Anime Radio Club to your server or get support [here](https://discord.gg/WCxHjFX)
+[Invite](https://discord.com/api/oauth2/authorize?client_id=868709887310434415&permissions=8&scope=bot) Anime Radio Club to your server or get support [here](https://discord.gg/WCxHjFX)
 
 ## View our Website!
 Visit our [website](http://animeradioclub.com/)

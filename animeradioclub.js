@@ -5,7 +5,7 @@ const request = require("request");
 const sql = require("sqlite");
 sql.open("./guilds.sqlite");
 
-const version = "4.4"
+const version = "5.2"
 
 let listeners = 0;
 
@@ -91,11 +91,11 @@ client.on("message", message => {
       const embed = new Discord.MessageEmbed()
         .setColor(3447003)
         .setAuthor('Update Notes', client.user.avatarURL)
-        .addField(`What's new in Version ${version}:`, `- Removed Italian to see if it'll help the bot actually run
+        .addField(`What's new in Version ${version}:`, `- Updated invite link
+                        - Removed commands that would target channels in the support server`)
+        .addField(`What was new in Previous Version:`, `- Removed Italian to see if it'll help the bot actually run
                         - Removed limit for requesting
                         - Updated Discord.js to v12 so was forced to update all code`)
-        .addField(`What was new in Previous Version:`, `- Fixed some Italian translations that got bugged and randomly changed to random letters.\n\
-                        - Hopefully fixed the constant crashes`)
 
       message.channel.send(embed)
     }
@@ -190,7 +190,7 @@ client.on("message", message => {
     if (command === "invite") {
       const embed = new Discord.MessageEmbed()
         .setColor(3447003)
-        .addField('Invite me to your server!', '[Click Here](https://discordapp.com/oauth2/authorize?client_id=273299834470006786&scope=bot&permissions=8)')
+        .addField('Invite me to your server!', '[Click Here](https://discord.com/api/oauth2/authorize?client_id=868709887310434415&permissions=8&scope=bot)')
         .addField('Get support!', '[Click Here](https://discord.gg/WCxHjFX)')
         .setThumbnail(client.user.avatarURL)
 
@@ -211,7 +211,6 @@ client.on("message", message => {
       const embed = new Discord.MessageEmbed()
         .setColor(3447003)
         .addField('Donate Paypal', '[Click Here](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=6VT2S8CMDZH2L&lc=AU&item_name=AnimeRadioClub&item_number=arc&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)', true)
-        .addField('Support on DiscordBotsList', '[Click Here](https://discordbots.org/bot/273299834470006786)', true)
         .setThumbnail(client.user.avatarURL)
         .setFooter("After donating, contact me directly, Felix#1330, to get yourself on the list of donators")
 
@@ -231,84 +230,6 @@ client.on("message", message => {
         .setThumbnail(client.user.avatarURL)
 
       message.channel.send(embed)
-    }
-
-    if (command === "report") {
-      if (!args.slice(1).join(" ")) {
-        const embed = new Discord.MessageEmbed()
-          .setColor("#ff0000")
-          .addField('Empty message!', "You must input a message to report! You cannot leave it blank.")
-
-        message.channel.send(embed)
-        return
-      }
-      const embed = new Discord.MessageEmbed()
-        .setColor("#68ca55")
-        .addField('Report sent!', "We will look into it!")
-
-      message.channel.send(embed);
-      const embed1 = new Discord.MessageEmbed()
-        .setTimestamp()
-        .setColor("#000000")
-        .addField('New Report!', `${message.author.username}#${message.author.discriminator} has sent in a report!`)
-        .addField('Report:', `${args.slice(1).join(" ")}`)
-        .addField('Server:', `${message.guild.name} (${message.guild.id})`)
-        .setThumbnail(message.author.avatarURL())
-
-      client.channels.cache.get(`690526398045093939`).send(embed1)
-      return
-    }
-
-    if (command === "suggest") {
-      if (!reason1) {
-        const embed = new Discord.MessageEmbed()
-          .setColor("#ff0000")
-          .addField('Empty message!', "You must input a suggestion! You cannot leave it blank.")
-
-        message.channel.send(embed)
-        return
-      }
-      const embed = new Discord.MessageEmbed()
-        .setColor("#68ca55")
-        .addField('Suggestion sent!', "Thank you for your feedback.")
-
-      message.channel.send(embed);
-      const embed1 = new Discord.MessageEmbed()
-        .setTimestamp()
-        .setColor(3447003)
-        .addField('New Feedback!', `${message.author.username}#${message.author.discriminator} has sent in a suggestion!`)
-        .addField('Suggestion:', `${reason1}`)
-        .addField('Server:', `${message.guild.name} (${message.guild.id})`)
-        .setThumbnail(message.author.avatarURL())
-
-      client.channels.cache.get(`408276356497932309`).send(embed1)
-      return
-    }
-
-    if (command === "request") {
-      if (!args.slice(1).join(" ")) {
-        const embed = new Discord.MessageEmbed()
-          .setColor("#ff0000")
-          .addField('Empty message!', "You must input a radio station you want to request to be added in! You cannot leave it blank.")
-
-        message.channel.send(embed)
-        return
-      };
-      const embed = new Discord.MessageEmbed()
-        .setColor("#68ca55")
-        .addField('Suggestion sent!', "That radio station will be considered.")
-
-      message.channel.send(embed);
-      const embed1 = new Discord.MessageEmbed()
-        .setTimestamp()
-        .setColor(3447003)
-        .addField('New Feedback!', `${message.author.username}#${message.author.discriminator} has sent in a suggestion!`)
-        .addField('Suggestion:', `${args.slice(1).join(" ")}`)
-        .addField('Server:', `${message.guild.name} (${message.guild.id})`)
-        .setThumbnail(message.author.avatarURL())
-
-      client.channels.cache.get(`397705396518912020`).send(embed1)
-      return
     }
 
     if (command === "list") {
@@ -427,10 +348,7 @@ Do `help <number>` to select a category')
           .setTitle("Support Commands")
           .setDescription('`invite`: Grab the invite links for the bot.\n\
 `website`: Grab the website and github link for the bot.\n\
-`updates`: Displays the update notes so you know what\'s new in this version of the bot.\n\
-`report`: Report if a radio station has stopped working.\n\
-`request`: Request a suggestion for a radio station to be added in.\n\
-`suggest`: Suggest a feature or command you\'d like to see on the bot.')
+`updates`: Displays the update notes so you know what\'s new in this version of the bot.')
 
         message.channel.send(page3)
         return

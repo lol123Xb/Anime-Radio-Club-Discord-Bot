@@ -3,7 +3,7 @@
 </p>
 
 # Completely reworked Anime Radio Club bot!
-Proudly made with Discord JS
+Proudly made with Discord JS v12.0.2
 
 # Command List:
 Anime Radio Club now uses per-guild config and has a per-guild prefix which the default is always `>`

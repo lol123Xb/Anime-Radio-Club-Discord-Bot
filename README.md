@@ -2,6 +2,10 @@
   <img src="https://cdn.discordapp.com/avatars/868709887310434415/5db4298d8f24ef238eecb8d04007a1b4.webp?size=2048" />
 </p>
 
+# Selling website domain and possibly full code with all radio stations on the bot
+I am no longer working on updating this bot and due to that, and Discord's unwillingness to be helpful in any way, I have decided to just entirely give up on this bot (I will keep it running, but if interest in this bot dies out then I will shut it off forever), so now I am selling the domain for the website and I may sell the code with all radio stations on it, depends on interest.
+Head to [here](http://animeradioclub.com) to purchase the domain
+
 # Completely reworked Anime Radio Club bot!
 Proudly made with Discord JS v12.0.2
 

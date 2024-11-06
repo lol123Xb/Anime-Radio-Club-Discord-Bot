@@ -2,6 +2,9 @@
   <img src="https://cdn.discordapp.com/avatars/868709887310434415/5db4298d8f24ef238eecb8d04007a1b4.webp?size=2048" />
 </p>
 
+# WOULD YOU LIKE TO SEE THIS BOT MAKE A COMEBACK?
+Head over to this [strawpoll](https://strawpoll.com/NPgxe8PXQZ2) and hit yes if so
+
 # Selling website domain and possibly full code with all radio stations on the bot
 I am no longer working on updating this bot and due to that, and Discord's unwillingness to be helpful in any way, I have decided to just entirely give up on this bot (I will keep it running, but if interest in this bot dies out then I will shut it off forever), so now I am selling the domain for the website and I may sell the code with all radio stations on it, depends on interest.
 
@@ -56,7 +59,7 @@ These are the stuff you'll have to install before doing anything
 * `npm install --save @discordjs/opus` to install voice for the bot
 
 # Links:
-[Invite](https://discord.com/api/oauth2/authorize?client_id=868709887310434415&permissions=8&scope=bot) Anime Radio Club to your server or get support [here](https://discord.gg/WCxHjFX)
+[Invite](https://discord.com/api/oauth2/authorize?client_id=868709887310434415&permissions=8&scope=bot) Anime Radio Club to your server
 
 ## View our Website!
 Visit our [website](http://animeradioclub.com/)
